@@ -1,7 +1,8 @@
+import Main from "@/components/Main";
 import React from "react";
 
 function Index() {
-  return <div>index page</div>;
+  return <Main />
 }
 
 export default Index;

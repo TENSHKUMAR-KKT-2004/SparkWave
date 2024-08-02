@@ -89,6 +89,7 @@ export default function index() {
                     alt="SparkWave"
                     height={300}
                     width={300}
+                    unoptimized
                 />
                 <span className="text-7xl">
                     SparkWave

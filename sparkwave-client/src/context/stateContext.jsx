@@ -5,15 +5,12 @@ export const StateContext = createContext()
 const loadState = () => {
     try {
         const serializedState = localStorage.getItem('appState')
-        console.log("serializedState",serializedState)
         if (serializedState === null) {return undefined}
         return JSON.parse(serializedState);
     } catch (err) {
         return undefined;
     }
 }
-
-console.log(loadState())
 
 const saveState = (state) => {
     try {
@@ -26,7 +23,6 @@ const saveState = (state) => {
 
 export const StateProvider = ({ initialState, reducer, children }) => {
     const [state, dispatch] = useReducer(reducer, loadState() || initialState)
-    console.log("state",state)
 
     useEffect(() => {
         saveState(state)
