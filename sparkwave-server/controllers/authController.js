@@ -22,6 +22,27 @@ const checkUser = async (req,res)=>{
     }
 }
 
+const userOnboarding  = async (req,res) =>{
+    const { email, name, about, image: profile_picture } = req.body
+
+    try{
+        if(!email || !name || !profile_picture){
+            return res.send("Email, Name and Profile picture are required")
+        }
+
+        const newUser = await prisma.user.create({
+            data: {
+                email, name, about, profile_picture
+            }
+        })
+
+        return res.json({msg: "Onboarding Success", status: true, data: newUser})
+    }catch(err){
+        console.log(err)
+    }
+}
+
 module.exports = {
     checkUser,
+    userOnboarding,
 }

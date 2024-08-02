@@ -2,7 +2,8 @@ import { reducerCases } from "./constants"
 
 export const initialState = {
     userInfo: undefined,
-    newUser: false
+    newUser: false,
+    onBoarded:false
 }
 
 export const reducer = (state, action)=>{
@@ -10,12 +11,13 @@ export const reducer = (state, action)=>{
         case reducerCases.SET_USER_INFO:
             return {
                 ...state,
-                userInfo: action.userInfo
+                userInfo: action.userInfo,
+                onBoarded: action.onBoarded
             }
         case reducerCases.SET_NEW_USER:
             return {
                 ...state,
-                newUser: action.newUser
+                newUser: action.newUser,
             }
         default:
             return state

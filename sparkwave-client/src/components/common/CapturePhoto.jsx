@@ -24,12 +24,6 @@ export default function CapturePhoto({ setImage, hide }) {
     }, [])
 
     const capturePhoto = async () => {
-        if (!videoRef.current || videoRef.current.readyState !== 4) {
-            alert("Video element not found. Please check your webcam connection")
-            hide(false)
-            return
-        }
-
         const hasWebcam = await checkWebcamAvailability()
         if (!hasWebcam) {
             alert("No webcam detected")
@@ -69,9 +63,9 @@ export default function CapturePhoto({ setImage, hide }) {
                     <IoClose className="h-10 w-10 cursor-pointer" alt="close photo library" />
                 </div>
                 <div className="flex justify-center">
-                    <vidio id="video" width="400" autoPlay ref={videoRef}>
+                    <video id="video" width="300" autoPlay ref={videoRef}>
 
-                    </vidio>
+                    </video>
                 </div>
                 <button
                     className="h-16 w-16 bg-white rounded-full cursor-pointer border-8 border-teal-light p-2 mb-10"

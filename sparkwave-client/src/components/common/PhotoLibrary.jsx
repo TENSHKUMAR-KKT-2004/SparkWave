@@ -26,7 +26,7 @@ export default function PhotoLibrary({ setImage, hidePhotoLib}) {
                 {
                     images.map((image, index)=>
                     (
-                        <dir onClick={()=> {setImage(images[index]); hidePhotoLib(false)}}>
+                        <dir key={index} onClick={()=> {setImage(images[index]); hidePhotoLib(false)}}>
                             <div className="h-24 w-24 cursor-pointer relative">
                                 <Image src={image} alt="avatar" fill />
                             </div>
