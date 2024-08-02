@@ -42,7 +42,37 @@ const userOnboarding  = async (req,res) =>{
     }
 }
 
+const getAllUsers = async (req, res)=>{
+    try{
+        const users = await prisma.user.findMany({
+            orderBy: {name : "asc"},
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                profile_picture: true,
+                about: true
+            }
+        })
+
+        const usersGroupByInitialLetter = {}
+
+        users.forEach((user)=>{
+            const initialLetter = user.name.charAt(0).toUpperCase()
+            if(!usersGroupByInitialLetter[initialLetter]){
+                usersGroupByInitialLetter[initialLetter] = []
+            }
+            usersGroupByInitialLetter[initialLetter].push(user)
+        })
+
+        return res.status(200).send({users: usersGroupByInitialLetter})
+    }catch(err){
+
+    }
+}
+
 module.exports = {
     checkUser,
     userOnboarding,
+    getAllUsers,
 }
