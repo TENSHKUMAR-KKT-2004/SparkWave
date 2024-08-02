@@ -14,7 +14,7 @@ export default function Main() {
     // const [redirectLogin, setRedirectLogin] = useState(false)
     const router = useRouter()
 
-    const [{ userInfo }, dispatch] = useStateProvider()
+    const [{ userInfo, currentChatUser }, dispatch] = useStateProvider()
 
     // useEffect(() => {
     //     if (redirectLogin) {
@@ -67,8 +67,10 @@ export default function Main() {
         <>
             <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] h-screen w-screen max-h-screen max-w-full overflow-hidden">
                 <ChatList />
-                {/* <Empty /> */}
-                <Chat />
+                {
+                    currentChatUser ? <Chat /> : <Empty />
+                }
+                
             </div>
         </>
     )

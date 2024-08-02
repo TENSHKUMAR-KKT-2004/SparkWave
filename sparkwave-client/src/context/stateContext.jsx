@@ -14,12 +14,19 @@ const loadState = () => {
 
 const saveState = (state) => {
     try {
-        const serializedState = JSON.stringify(state);
-        localStorage.setItem('appState', serializedState);
+        const { userInfo, newUser, onBoarded } = state
+        const stateToSave = {
+            userInfo,
+            newUser,
+            onBoarded
+        }
+
+        const serializedState = JSON.stringify(stateToSave)
+        localStorage.setItem('appState', serializedState)
     } catch (err) {
         console.log(err)
     }
-};
+}
 
 export const StateProvider = ({ initialState, reducer, children }) => {
     const [state, dispatch] = useReducer(reducer, loadState() || initialState)
