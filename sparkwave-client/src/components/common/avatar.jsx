@@ -5,6 +5,7 @@ import ContextMenu from './ContextMenu'
 import PhotoPicker from './PhotoPicker'
 import PhotoLibrary from './PhotoLibrary'
 import CapturePhoto from './CapturePhoto'
+import { useStateProvider } from '@/context/stateContext'
 
 export default function Avatar({ type, image, setImage }) {
     const [hover, setHover] = useState(false)
@@ -13,6 +14,13 @@ export default function Avatar({ type, image, setImage }) {
     const [grabPhoto,setGrabPhoto] = useState(false)
     const [showPhotoLib,setShowPhotoLib] = useState(false)
     const [showCapturePhoto,setShowCapturePhoto] = useState(false)
+    const [avatarSrc, setAvatarSrc] = useState('/default_avatar.png')
+
+    useEffect(() => {
+        if (image) {
+          setAvatarSrc(image);
+        }
+      }, [image]);
 
     const photoPickerChange = async(e)=>{
         const file = e.target.files[0]
@@ -68,14 +76,14 @@ export default function Avatar({ type, image, setImage }) {
             {
                 type === "sm" &&
                 <div className="relative h-10 w-10">
-                    <Image src={image} alt="avatar" className="rounded-full" fill unoptimized />
+                    <Image src={avatarSrc} alt="avatar" className="rounded-full" fill loading="lazy"   />
                 </div>
             }
 
             {
                 type === "lg" &&
                 <div className="relative h-14 w-14">
-                    <Image src={image} alt="avatar" className="rounded-full" fill unoptimized />
+                    <Image src={avatarSrc} alt="avatar" className="rounded-full" fill loading="lazy"   />
                 </div>
             }
 
@@ -101,7 +109,7 @@ export default function Avatar({ type, image, setImage }) {
                         >Change <br /> profile <br /> picture</span>
                     </div>
                     <div className="h-60 w-60 flex items-center justify-center">
-                        <Image src={image} alt="avatar" className="rounded-full" fill unoptimized />
+                        <Image src={avatarSrc} alt="avatar" className="rounded-full" fill loading="lazy"   />
                     </div>
                 </div>
             }

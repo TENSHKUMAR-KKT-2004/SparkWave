@@ -5,7 +5,7 @@ import { BsFillChatLeftTextFill, BsThreeDotsVertical } from 'react-icons/bs'
 
 export default function ChatListHeader() {
   const [{ userInfo }, dispatch] = useStateProvider()
-
+  
   return (
     <div className="h-16 px-4 flex justify-between items-center">
       <div className="curser-pointer">

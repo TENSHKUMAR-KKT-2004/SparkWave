@@ -7,6 +7,7 @@ import Empty from './Empty'
 // import { CHECK_USER_ROUTE } from '@/utils/apiRoutes'
 import { useRouter } from 'next/router'
 import { useStateProvider } from '@/context/stateContext'
+import Chat from './chat/Chat'
 // import { reducerCases } from '@/context/constants'
 
 export default function Main() {
@@ -66,7 +67,8 @@ export default function Main() {
         <>
             <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] h-screen w-screen max-h-screen max-w-full overflow-hidden">
                 <ChatList />
-                <Empty />
+                {/* <Empty /> */}
+                <Chat />
             </div>
         </>
     )
