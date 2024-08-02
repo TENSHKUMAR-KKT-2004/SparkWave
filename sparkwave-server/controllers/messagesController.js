@@ -11,9 +11,9 @@ const addMessages = async (req, res) => {
                     sender: { connect: { id: parseInt(from) } },
                     reciever: { connect: { id: parseInt(to) } },
                     messageStatus: getUser?"delivered":"send",
-                    include:{
-                        sender: true, reciever: true
-                    }
+                },
+                include:{
+                    sender: true, reciever: true
                 }
             })
 

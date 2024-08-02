@@ -1,4 +1,6 @@
 import { useStateProvider } from '@/context/stateContext'
+import { SEND_MESSAGE_ROUTE } from '@/utils/apiRoutes'
+import axios from 'axios'
 import React, { useState } from 'react'
 import { BsEmojiSmile } from "react-icons/bs"
 import { ImAttachment } from "react-icons/im"
@@ -10,7 +12,17 @@ export default function MessageBar() {
   const [message,setMessage] = useState("")
 
   const sendMessage = async()=>{
-    alert(message)
+    try{  
+      const {data} = await axios.post(SEND_MESSAGE_ROUTE,{
+        to: currentChatUser.id,
+        from: userInfo.id,
+        message
+      })
+
+      setMessage('')
+    }catch(err){
+      console.log(err)
+    }
   }
 
   return (
