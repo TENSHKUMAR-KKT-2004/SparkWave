@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const cors = require('cors')
+const {Server} = require('socket.io')
 
 dotenv.config()
 const app = express()
@@ -19,4 +20,17 @@ const server = app.listen(8080,()=>{
     console.log('Server running on http://localhost:8080')
 })
 
+const io = new Server(server,{
+    cors:{
+        origin: "http://localhost:3000"
+    }
+})
+
 global.onlineUsers = new Map()
+
+io.on("connection",(socket)=>{
+    global.chatSocket = socket
+    socket.on("add-user",(userId)=>{
+        onlineUsers.set(userId, socket.id)
+    })
+})
