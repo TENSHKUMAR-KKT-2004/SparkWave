@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import ChatList from './chatlist/ChatList'
 import Empty from './Empty'
 // import { onAuthStateChanged } from 'firebase/auth'
@@ -8,6 +8,9 @@ import Empty from './Empty'
 import { useRouter } from 'next/router'
 import { useStateProvider } from '@/context/stateContext'
 import Chat from './chat/Chat'
+import axios from 'axios'
+import { GET_MESSAGES_ROUTE } from '@/utils/apiRoutes'
+import { reducerCases } from '@/context/constants'
 // import { reducerCases } from '@/context/constants'
 
 export default function Main() {
@@ -63,6 +66,20 @@ export default function Main() {
     //     }
     // })
 
+    useEffect(() => {
+        const getMessages = async () => {
+            const { data: { messages } } = await axios.get(`${GET_MESSAGES_ROUTE}/${userInfo.id}/${currentChatUser.id}`)
+
+            dispatch({
+                type: reducerCases.SET_MESSAGES,
+                messages
+            })
+        }
+        if (currentChatUser?.id) {
+            getMessages()
+        }
+    }, [currentChatUser])
+
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] h-screen w-screen max-h-screen max-w-full overflow-hidden">
@@ -70,7 +87,7 @@ export default function Main() {
                 {
                     currentChatUser ? <Chat /> : <Empty />
                 }
-                
+
             </div>
         </>
     )

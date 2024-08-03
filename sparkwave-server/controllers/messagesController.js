@@ -10,7 +10,7 @@ const addMessages = async (req, res) => {
                     message,
                     sender: { connect: { id: parseInt(from) } },
                     reciever: { connect: { id: parseInt(to) } },
-                    messageStatus: getUser?"delivered":"send",
+                    messageStatus: getUser? "delivered" : "sent",
                 },
                 include:{
                     sender: true, reciever: true
@@ -50,11 +50,13 @@ const getMessages = async (req, res)=>{
         const unreadMessages = []
 
         messages.forEach((message, index) => {
-            if(message.messageStatus !== "read" && message.senderId === parseInt(to)){
+            if(message.messageStatus !== "read" && message.senderId === parseInt(from)){
                 messages[index].messageStatus="read"
                 unreadMessages.push(message.id)
             }
         })
+
+        console.log(unreadMessages)
 
         await prisma.messages.updateMany({
             where:{
@@ -65,7 +67,7 @@ const getMessages = async (req, res)=>{
             }
         })
 
-        return res.send(200).json({messages})
+        return res.status(200).json({messages})
     }catch(err){
         console.log(err)
     }
