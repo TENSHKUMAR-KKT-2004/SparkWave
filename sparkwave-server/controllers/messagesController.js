@@ -30,7 +30,6 @@ const addMessages = async (req, res) => {
 const getMessages = async (req, res)=>{
     try{
         const {from, to} = req.params
-        console.log(from, to)
         const messages = await prisma.messages.findMany({
             where:{
                 OR: [
@@ -102,8 +101,38 @@ const addImageMessage = async (req, res)=>{
     }
 }
 
+const addAudioMessage = async (req, res)=>{
+    const { from, to} = req.query
+    // console.log('file is uploading')
+    try{
+        if(req.file){
+            const fileName = 'uploads/recordings/'+req.file.filename
+
+            if(from && to){
+                const message = await prisma.messages.create({
+                    data: {
+                        message: fileName,
+                        sender: { connect: { id: parseInt(from) } },
+                        reciever: { connect: { id: parseInt(to) } },
+                        type: "audio",
+                    }
+                })
+
+                return res.status(201).json({message})
+            }
+
+            return res.status(400).send("from & to is required")
+        }
+
+        return res.status(400).send("audio is required")
+    }catch(err){
+        console.log(err)
+    }
+}
+
 module.exports = {
     addMessages,
     getMessages,
-    addImageMessage
+    addImageMessage,
+    addAudioMessage
 }
