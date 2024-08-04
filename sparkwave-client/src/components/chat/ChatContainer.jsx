@@ -5,7 +5,6 @@ import MessageStatus from '../common/MessageStatus'
 
 export default function ChatContainer() {
   const [{ messages, currentChatUser, userInfo }] = useStateProvider()
-  console.log(currentChatUser, messages)
   return (
     <div className="h-[80vh] w-full relative flex-grow overflow-auto custom-scrollbar">
       <div className="bg-chat-background bg-fixed h-full w-full opacity-5 fixed z-0"></div>

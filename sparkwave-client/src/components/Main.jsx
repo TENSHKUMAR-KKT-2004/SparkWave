@@ -12,13 +12,13 @@ import axios from 'axios'
 import { GET_MESSAGES_ROUTE, HOST } from '@/utils/apiRoutes'
 import { reducerCases } from '@/context/constants'
 // import { reducerCases } from '@/context/constants'
-import {io} from 'socket.io-client'
+import { io } from 'socket.io-client'
 
 export default function Main() {
     // const [redirectLogin, setRedirectLogin] = useState(false)
     const router = useRouter()
     const socket = useRef()
-    const [ socketEvent, setSocketEvent ] = useState(false)
+    const [socketEvent, setSocketEvent] = useState(false)
 
     const [{ userInfo, currentChatUser }, dispatch] = useStateProvider()
 
@@ -69,8 +69,8 @@ export default function Main() {
     //     }
     // })
 
-    useEffect(()=>{
-        if(userInfo){
+    useEffect(() => {
+        if (userInfo) {
             socket.current = io(HOST)
             socket.current.emit("add-user", userInfo.id)
 
@@ -81,11 +81,12 @@ export default function Main() {
         }
     }, [userInfo])
 
-    useEffect(()=>{
-        if(socket.current && !socketEvent){
-            socket.current.on('msg-recieve',(data)=>{
+    useEffect(() => {
+        if (socket.current && !socketEvent) {
+            socket.current.on('message-recieve', (data) => {
+                console.log(data)
                 dispatch({
-                    type: reducerCases.ADD_MESSAGE,
+                    type: reducerCases.ADD_NEW_MESSAGE,
                     newMessage: {
                         ...data.message
                     }
@@ -93,7 +94,7 @@ export default function Main() {
             })
             setSocketEvent(true)
         }
-    },[socket.current])
+    }, [socket.current])
 
     useEffect(() => {
         const getMessages = async () => {
@@ -104,14 +105,15 @@ export default function Main() {
                 messages
             })
         }
-        if(currentChatUser?.id){
+        if (currentChatUser?.id) {
             getMessages()
         }
     }, [currentChatUser])
 
     return (
         <>
-            <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] h-screen w-screen max-h-screen max-w-full overflow-hidden">
+            {/* grid-col-1 md:grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] */}
+            <div className="grid grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] md:grid-cols-[300px_1fr]  h-screen w-screen max-h-screen max-w-full overflow-hidden">
                 <ChatList />
                 {
                     currentChatUser ? <Chat /> : <Empty />
