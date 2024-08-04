@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import ChatList from './chatlist/ChatList'
 import Empty from './Empty'
 // import { onAuthStateChanged } from 'firebase/auth'
@@ -9,13 +9,15 @@ import { useRouter } from 'next/router'
 import { useStateProvider } from '@/context/stateContext'
 import Chat from './chat/Chat'
 import axios from 'axios'
-import { GET_MESSAGES_ROUTE } from '@/utils/apiRoutes'
+import { GET_MESSAGES_ROUTE, HOST } from '@/utils/apiRoutes'
 import { reducerCases } from '@/context/constants'
 // import { reducerCases } from '@/context/constants'
+import {io} from 'socket.io-client'
 
 export default function Main() {
     // const [redirectLogin, setRedirectLogin] = useState(false)
     const router = useRouter()
+    const socket = useRef()
 
     const [{ userInfo, currentChatUser }, dispatch] = useStateProvider()
 
@@ -66,16 +68,25 @@ export default function Main() {
     //     }
     // })
 
+    // useEffect(()=>{
+    //     if(userInfo){
+    //         socket.current = io(HOST)
+    //         socket.current.emit("add-user", userInfo.id)
+
+            
+    //     }
+    // }, [userInfo])
+
     useEffect(() => {
         const getMessages = async () => {
-            const { data: { messages } } = await axios.get(`${GET_MESSAGES_ROUTE}/${userInfo.id}/${currentChatUser.id}`)
+            const { data: { messages } } = await axios.get(`${GET_MESSAGES_ROUTE}/${userInfo.id}/${currentChatUser?.id}`)
 
             dispatch({
                 type: reducerCases.SET_MESSAGES,
                 messages
             })
         }
-        if (currentChatUser?.id) {
+        if(currentChatUser?.id){
             getMessages()
         }
     }, [currentChatUser])

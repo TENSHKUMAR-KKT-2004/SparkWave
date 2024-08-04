@@ -4,7 +4,7 @@ import { useStateProvider } from '@/context/stateContext'
 import { reducerCases } from '@/context/constants'
 
 export default function ChatListItem({ data, isContactsPage = false }) {
-    const [{ userInfo, currentChatUser }, dispatch] = useStateProvider()
+    const [{}, dispatch] = useStateProvider()
     const handleContactClick = () => {
         dispatch({type: reducerCases.CHANGE_CURRENT_CHAT_USER, user: { ...data }})
         dispatch({type: reducerCases.SET_ALL_CONTACTS_PAGE})

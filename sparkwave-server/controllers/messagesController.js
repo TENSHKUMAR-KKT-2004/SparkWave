@@ -29,6 +29,7 @@ const addMessages = async (req, res) => {
 const getMessages = async (req, res)=>{
     try{
         const {from, to} = req.params
+        console.log(from, to)
         const messages = await prisma.messages.findMany({
             where:{
                 OR: [
@@ -50,13 +51,11 @@ const getMessages = async (req, res)=>{
         const unreadMessages = []
 
         messages.forEach((message, index) => {
-            if(message.messageStatus !== "read" && message.senderId === parseInt(from)){
+            if(message.messageStatus !== "read" && message.senderId === parseInt(to)){
                 messages[index].messageStatus="read"
                 unreadMessages.push(message.id)
             }
         })
-
-        console.log(unreadMessages)
 
         await prisma.messages.updateMany({
             where:{
