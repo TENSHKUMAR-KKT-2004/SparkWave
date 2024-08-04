@@ -1,6 +1,6 @@
 import { reducerCases } from '@/context/constants'
 import { useStateProvider } from '@/context/stateContext'
-import { SEND_IMAGE_MESSAGE, SEND_IMAGE_MESSAGE_ROUTE, SEND_MESSAGE_ROUTE } from '@/utils/apiRoutes'
+import { SEND_IMAGE_MESSAGE_ROUTE, SEND_MESSAGE_ROUTE } from '@/utils/apiRoutes'
 import axios from 'axios'
 import React, { useState, useRef, useEffect } from 'react'
 import { BsEmojiSmile } from "react-icons/bs"
@@ -8,7 +8,8 @@ import { ImAttachment } from "react-icons/im"
 import { MdSend } from "react-icons/md"
 import EmojiPicker from 'emoji-picker-react'
 import PhotoPicker from '../common/PhotoPicker'
-// import { FaMicrophone } from 'react-icons/fa'
+import { FaMicrophone } from 'react-icons/fa'
+import CaptureAudio from '../common/CaptureAudio '
 
 export default function MessageBar() {
   const [{ userInfo, currentChatUser, socket }, dispatch] = useStateProvider()
@@ -16,6 +17,7 @@ export default function MessageBar() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const emojiPickerRef = useRef(null)
   const [grabPhoto, setGrabPhoto] = useState(false)
+  const [showAudioRecorder, setShowAudioRecorder] = useState()
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -49,10 +51,10 @@ export default function MessageBar() {
   const photoPickerChange = async (e) => {
     const file = e.target.files[0]
     const formData = new FormData()
-    formData.append('image',file)
-    try{
-      const res = await axios.post(SEND_IMAGE_MESSAGE_ROUTE,formData,{
-        headers:{
+    formData.append('image', file)
+    try {
+      const res = await axios.post(SEND_IMAGE_MESSAGE_ROUTE, formData, {
+        headers: {
           "Content-Type": "multipart/form-data"
         },
         params: {
@@ -61,13 +63,13 @@ export default function MessageBar() {
         }
       })
 
-      if(res.status === 201){
+      if (res.status === 201) {
         socket.current.emit('send-message', {
           to: currentChatUser.id,
           from: userInfo.id,
           message: res.data.message
         })
-  
+
         dispatch({
           type: reducerCases.ADD_NEW_MESSAGE,
           newMessage: {
@@ -75,10 +77,10 @@ export default function MessageBar() {
           },
           fromSelf: true
         })
-  
+
         setMessage('')
       }
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
   }
@@ -121,50 +123,61 @@ export default function MessageBar() {
 
   return (
     <div className="bg-panel-header-background h-20 px-4 flex items-center gap-6 relative">
-      <>
-        <div className="flex gap-6">
-          <BsEmojiSmile
-            className="text-panel-header-icon cursor-pointer text-xl"
-            title='Emoji'
-            id="emoji-open"
-            onClick={handleEmojiModel}
-          />
-          {
-            showEmojiPicker && <div className="absolute bottom-24 left-16 z-40" ref={emojiPickerRef}>
-              <EmojiPicker onEmojiClick={handleEmojiClick} theme="dark" />
-            </div>
-          }
-          <ImAttachment
-            className="text-panel-header-icon cursor-pointer text-xl"
-            title='Attach File'
-            onClick={() => setGrabPhoto(true)}
-          />
-          {
-            grabPhoto && <PhotoPicker onChange={photoPickerChange} />
-          }
-        </div>
-
-        <div className="w-full rounded-lg h-10 flex items-center">
-          <input type="text" placeholder="Type a message"
-            className="bg-input-background text-sm focus:outline-none text-white h-10 rounded-lg px-5 py-4 w-full"
-            onChange={(e) => setMessage(e.target.value)}
-            value={message}
-          />
-        </div>
-        <div className="flex w-10 items-center justify-center">
-          <button>
-            <MdSend
+      {
+        !showAudioRecorder &&
+        <>
+          <div className="flex gap-6">
+            <BsEmojiSmile
               className="text-panel-header-icon cursor-pointer text-xl"
-              title='Send message'
-              onClick={sendMessage}
+              title='Emoji'
+              id="emoji-open"
+              onClick={handleEmojiModel}
             />
-            {/* <FaMicrophone
+            {
+              showEmojiPicker && <div className="absolute bottom-24 left-16 z-40" ref={emojiPickerRef}>
+                <EmojiPicker onEmojiClick={handleEmojiClick} theme="dark" />
+              </div>
+            }
+            <ImAttachment
               className="text-panel-header-icon cursor-pointer text-xl"
-              title='Record voice message'
-            /> */}
-          </button>
-        </div>
-      </>
+              title='Attach File'
+              onClick={() => setGrabPhoto(true)}
+            />
+            {
+              grabPhoto && <PhotoPicker onChange={photoPickerChange} />
+            }
+          </div>
+
+          <div className="w-full rounded-lg h-10 flex items-center">
+            <input type="text" placeholder="Type a message"
+              className="bg-input-background text-sm focus:outline-none text-white h-10 rounded-lg px-5 py-4 w-full"
+              onChange={(e) => setMessage(e.target.value)}
+              value={message}
+            />
+          </div>
+          <div className="flex w-10 items-center justify-center">
+
+            <button>
+              {
+                message.length ?
+                  <MdSend
+                    className="text-panel-header-icon cursor-pointer text-xl"
+                    title='Send message'
+                    onClick={sendMessage}
+                  /> :
+                  <FaMicrophone
+                    className="text-panel-header-icon cursor-pointer text-xl"
+                    title='Record voice message'
+                    onClick={() => setShowAudioRecorder(true)}
+                  />
+              }
+            </button>
+          </div>
+        </>
+      }
+      {
+        showAudioRecorder && <CaptureAudio hide={setShowAudioRecorder} />
+      }
     </div>
   )
 }
