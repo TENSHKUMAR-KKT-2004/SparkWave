@@ -1,4 +1,5 @@
 const prisma = require("../utils/prismaClient")
+const {renameSync} = require('fs')
 
 const addMessages = async (req, res) => {
     try {
@@ -72,7 +73,39 @@ const getMessages = async (req, res)=>{
     }
 }
 
+const addImageMessage = async (req, res)=>{
+    try{
+        if(req.file){
+            const date = Date.now()
+            let fileName = 'uploads/images'+date+req.file.originalName
+            renameSync(req.file.path, fileName)
+
+            const { from, to} = req.query
+
+            if(from && to){
+                const message = await prisma.messages.create({
+                    data: {
+                        message: fileName,
+                        sender: { connect: { id: parseInt(from) } },
+                        reciever: { connect: { id: parseInt(to) } },
+                        type: "image",
+                    }
+                })
+
+                return res.status(200).json({message})
+            }
+
+            return res.status(400).send("from & to is required")
+        }
+
+        return res.status(400).send("image is required")
+    }catch(err){
+        console.log(err)
+    }
+}
+
 module.exports = {
     addMessages,
-    getMessages
+    getMessages,
+    addImageMessage
 }
