@@ -2,15 +2,42 @@ import { reducerCases } from '@/context/constants'
 import { useStateProvider } from '@/context/stateContext'
 import { SEND_MESSAGE_ROUTE } from '@/utils/apiRoutes'
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { BsEmojiSmile } from "react-icons/bs"
 import { ImAttachment } from "react-icons/im"
 import { MdSend } from "react-icons/md"
+import EmojiPicker from'emoji-picker-react'
 // import { FaMicrophone } from 'react-icons/fa'
 
 export default function MessageBar() {
   const [{userInfo, currentChatUser, socket}, dispatch] = useStateProvider()
   const [message,setMessage] = useState("")
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+  const emojiPickerRef = useRef(null)
+
+  useEffect(()=>{
+    const handleOutsideClick = (e)=>{
+      if(e.target.id !== 'emoji-open'){
+        if(emojiPickerRef.current && !emojiPickerRef.current.contains(e.target)){
+          setShowEmojiPicker(false)
+        }
+      }
+    }
+
+    document.addEventListener('click',handleOutsideClick)
+
+    return ()=>{
+      document.removeEventListener('click',handleOutsideClick)
+    }
+  },[])
+
+  const handleEmojiModel = ()=>{
+    setShowEmojiPicker(!showEmojiPicker)
+  }
+
+  const handleEmojiClick = (emoji)=>{
+    setMessage((prevMessage) => (prevMessage += emoji.emoji))
+  }
 
   const sendMessage = async()=>{
     try{  
@@ -47,7 +74,14 @@ export default function MessageBar() {
           <BsEmojiSmile
             className="text-panel-header-icon cursor-pointer text-xl"
             title='Emoji'
+            id="emoji-open"
+            onClick={handleEmojiModel}
           />
+          {
+            showEmojiPicker && <div className="absolute bottom-24 left-16 z-40" ref={emojiPickerRef}>
+              <EmojiPicker onEmojiClick={handleEmojiClick} theme="dark" />
+            </div>
+          }
           <ImAttachment
             className="text-panel-header-icon cursor-pointer text-xl"
             title='Attach File'
