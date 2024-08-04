@@ -13,6 +13,7 @@ import { GET_MESSAGES_ROUTE, HOST } from '@/utils/apiRoutes'
 import { reducerCases } from '@/context/constants'
 // import { reducerCases } from '@/context/constants'
 import { io } from 'socket.io-client'
+import SearchMessages from './chat/SearchMessages'
 
 export default function Main() {
     // const [redirectLogin, setRedirectLogin] = useState(false)
@@ -20,7 +21,7 @@ export default function Main() {
     const socket = useRef()
     const [socketEvent, setSocketEvent] = useState(false)
 
-    const [{ userInfo, currentChatUser }, dispatch] = useStateProvider()
+    const [{ userInfo, currentChatUser, messagesSearch }, dispatch] = useStateProvider()
 
     // useEffect(() => {
     //     if (redirectLogin) {
@@ -116,7 +117,13 @@ export default function Main() {
             <div className="grid grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] md:grid-cols-[300px_1fr]  h-screen w-screen max-h-screen max-w-full overflow-hidden">
                 <ChatList />
                 {
-                    currentChatUser ? <Chat /> : <Empty />
+                    currentChatUser ? 
+                    <div className={messagesSearch ? "grid grid-cols-2" : "grid-cols-2"}>
+                        <Chat />
+                        {
+                            messagesSearch && <SearchMessages />
+                        }
+                    </div> : <Empty />
                 }
 
             </div>

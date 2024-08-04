@@ -15,7 +15,7 @@ export default function SearchBar() {
         <div>
           <input 
           type="text" 
-          placeholder="Search chat" 
+          placeholder="Search Chat" 
           className="bg-transparent text-sm focus:outline-none text-white w-full"
           
           />
