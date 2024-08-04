@@ -1,6 +1,6 @@
 import { reducerCases } from '@/context/constants'
 import { useStateProvider } from '@/context/stateContext'
-import { SEND_MESSAGE_ROUTE } from '@/utils/apiRoutes'
+import { SEND_IMAGE_MESSAGE, SEND_IMAGE_MESSAGE_ROUTE, SEND_MESSAGE_ROUTE } from '@/utils/apiRoutes'
 import axios from 'axios'
 import React, { useState, useRef, useEffect } from 'react'
 import { BsEmojiSmile } from "react-icons/bs"
@@ -48,7 +48,39 @@ export default function MessageBar() {
 
   const photoPickerChange = async (e) => {
     const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image',file)
+    try{
+      const res = await axios.post(SEND_IMAGE_MESSAGE_ROUTE,formData,{
+        headers:{
+          "Content-Type": "multipart/form-data"
+        },
+        params: {
+          from: userInfo.id,
+          to: currentChatUser.id
+        }
+      })
 
+      if(res.status === 201){
+        socket.current.emit('send-message', {
+          to: currentChatUser.id,
+          from: userInfo.id,
+          message: res.data.message
+        })
+  
+        dispatch({
+          type: reducerCases.ADD_NEW_MESSAGE,
+          newMessage: {
+            ...res.data.message
+          },
+          fromSelf: true
+        })
+  
+        setMessage('')
+      }
+    }catch(err){
+      console.log(err)
+    }
   }
 
   const handleEmojiModel = () => {

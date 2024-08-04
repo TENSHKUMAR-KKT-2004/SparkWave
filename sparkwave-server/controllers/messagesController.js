@@ -74,13 +74,11 @@ const getMessages = async (req, res)=>{
 }
 
 const addImageMessage = async (req, res)=>{
+    const { from, to} = req.query
+    // console.log('file is uploading')
     try{
         if(req.file){
-            const date = Date.now()
-            let fileName = 'uploads/images'+date+req.file.originalName
-            renameSync(req.file.path, fileName)
-
-            const { from, to} = req.query
+            const fileName = 'uploads/images/'+req.file.filename
 
             if(from && to){
                 const message = await prisma.messages.create({
@@ -92,7 +90,7 @@ const addImageMessage = async (req, res)=>{
                     }
                 })
 
-                return res.status(200).json({message})
+                return res.status(201).json({message})
             }
 
             return res.status(400).send("from & to is required")
