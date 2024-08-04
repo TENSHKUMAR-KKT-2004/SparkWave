@@ -18,6 +18,7 @@ export default function Main() {
     // const [redirectLogin, setRedirectLogin] = useState(false)
     const router = useRouter()
     const socket = useRef()
+    const [ socketEvent, setSocketEvent ] = useState(false)
 
     const [{ userInfo, currentChatUser }, dispatch] = useStateProvider()
 
@@ -68,14 +69,31 @@ export default function Main() {
     //     }
     // })
 
-    // useEffect(()=>{
-    //     if(userInfo){
-    //         socket.current = io(HOST)
-    //         socket.current.emit("add-user", userInfo.id)
+    useEffect(()=>{
+        if(userInfo){
+            socket.current = io(HOST)
+            socket.current.emit("add-user", userInfo.id)
 
-            
-    //     }
-    // }, [userInfo])
+            dispatch({
+                type: reducerCases.SET_SOCKET,
+                socket: socket
+            })
+        }
+    }, [userInfo])
+
+    useEffect(()=>{
+        if(socket.current && !socketEvent){
+            socket.current.on('msg-recieve',(data)=>{
+                dispatch({
+                    type: reducerCases.ADD_MESSAGE,
+                    newMessage: {
+                        ...data.message
+                    }
+                })
+            })
+            setSocketEvent(true)
+        }
+    },[socket.current])
 
     useEffect(() => {
         const getMessages = async () => {
