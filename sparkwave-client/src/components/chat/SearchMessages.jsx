@@ -1,14 +1,24 @@
 import { reducerCases } from '@/context/constants'
 import { useStateProvider } from '@/context/stateContext'
 import { calculateTime } from '@/utils/calculateTime'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BiSearchAlt2 } from 'react-icons/bi'
 import { IoClose } from 'react-icons/io5'
 
 export default function SearchMessages() {
   const [{ currentChatUser, messages }, dispatch] = useStateProvider()
   const [searchTerm, setSearchTerm] = useState("")
-  const [searchMessages, setSearchMessages] = useState('')
+  const [searchMessages, setSearchMessages] = useState([])
+
+  useEffect(()=>{
+    if(searchTerm){
+      setSearchMessages(messages.filter(message=>
+        message.type === 'text' && message.message.includes(searchTerm)
+    ))
+    } else{
+      setSearchMessages([])
+    }
+  },[searchTerm])
 
   return (
     <div className="border-conversation-border border-l w-full flex flex-col z-10 max-h-screen bg-conversation-panel-background">
