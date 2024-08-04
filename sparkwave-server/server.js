@@ -14,6 +14,7 @@ const authRoute = require('./routes/authRoute')
 const messageRoute = require('./routes/messageRoute')
 
 app.use("/uploads/images", express.static("uploads/images"))
+app.use("/uploads/recordings", express.static("uploads/recordings"))
 
 app.use('/api/auth',authRoute)
 app.use('/api/messages',messageRoute)
