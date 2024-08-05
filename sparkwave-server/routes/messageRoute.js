@@ -3,7 +3,7 @@ const multer = require("multer")
 const path = require('path')
 const fs = require('fs')
 
-const { addMessages, getMessages, addImageMessage, addAudioMessage } = require('../controllers/messagesController')
+const { addMessages, getMessages, addImageMessage, addAudioMessage, getInitialContactsWithMessages } = require('../controllers/messagesController')
 
 const router = express.Router()
 
@@ -49,5 +49,6 @@ router.route('/send-message').post(addMessages)
 router.route('/get-messages/:from/:to').get(getMessages)
 router.route('/send-image-message').post(uploadImage.single('image'),addImageMessage)
 router.route('/send-audio-message').post(uploadAudio.single('audio'),addAudioMessage)
+router.route('/get-initial-contacts/:from').get(getInitialContactsWithMessages)
 
 module.exports = router

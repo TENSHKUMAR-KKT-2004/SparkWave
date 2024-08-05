@@ -131,6 +131,7 @@ const addAudioMessage = async (req, res) => {
 }
 
 const getInitialContactsWithMessages = async (req, res) => {
+
     try {
         const userId = parseInt(req.params.from)
 
@@ -165,28 +166,27 @@ const getInitialContactsWithMessages = async (req, res) => {
         const messageStatusChange = []
 
         messages.forEach((message)=>{
-            const isSender = msg.senderId === userId
+            const isSender = message.senderId === userId
             const calculatedOpositeUserId = isSender ? message.recieverId : message.senderId
             
             if(message.messageStatus === "sent"){
                 messageStatusChange.push(message.id)
             }
 
-            if(!users.get(calculatedOpositeUserId)){
-                const {
-                    id,
-                    type,
-                    message,
-                    messageStatus,
-                    createdAt,
-                    senderId,
-                    recieverId
-                } = message
+            const {
+                id,
+                type,
+                messageStatus,
+                createdAt,
+                senderId,
+                recieverId
+            } = message
 
+            if(!users.get(calculatedOpositeUserId)){
                 let user = {
                     messageId: id,
                     type,
-                    message,
+                    message: message.message,
                     messageStatus,
                     createdAt,
                     senderId,
@@ -228,7 +228,7 @@ const getInitialContactsWithMessages = async (req, res) => {
             })
         }
 
-        return res.status.json({
+        return res.status(200).json({
             users: Array.from(users.values()),
             onlineUsers: Array.from(onlineUsers.keys())
         })
