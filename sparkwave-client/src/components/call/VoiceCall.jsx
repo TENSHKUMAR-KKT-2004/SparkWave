@@ -4,9 +4,9 @@ import { useStateProvider } from '@/context/stateContext'
 const Container = dynamic(()=> import('./Container'),{ssr:false})
 
 export default function VoiceCall() {
-    const [{VoiceCall,socket,userInfo}] = useStateProvider()
+    const [{voiceCall,socket,userInfo}] = useStateProvider()
 
     return ( 
-      <Container data={VoiceCall} />
+      <Container data={voiceCall} />
     )
 }

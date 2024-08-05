@@ -128,7 +128,7 @@ export default function Main() {
             }
 
             {/* grid-col-1 md:grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] */}
-            <div className="grid grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] md:grid-cols-[300px_1fr]  h-screen w-screen max-h-screen max-w-full overflow-hidden">
+            {!videoCall && !voiceCall && <div className="grid grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] md:grid-cols-[300px_1fr]  h-screen w-screen max-h-screen max-w-full overflow-hidden">
                 <ChatList />
                 {
                     currentChatUser ?
@@ -141,6 +141,7 @@ export default function Main() {
                 }
 
             </div>
+            }
         </>
     )
 }
