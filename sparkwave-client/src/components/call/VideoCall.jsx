@@ -12,7 +12,7 @@ export default function VideoCall() {
                 to: videoCall.id,
                 from:{ 
                 id: userInfo.id,
-                profileImage: userInfo.profileImage,
+                profile_picture: userInfo.profileImage,
                 name: userInfo.name
                 },
                 callType: videoCall.callType,

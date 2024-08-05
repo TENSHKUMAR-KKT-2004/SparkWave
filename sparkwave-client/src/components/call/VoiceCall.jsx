@@ -12,7 +12,7 @@ export default function VoiceCall() {
                 to: voiceCall.id,
                 from:{ 
                 id: userInfo.id,
-                profileImage: userInfo.profileImage,
+                profile_picture: userInfo.profileImage,
                 name: userInfo.name
                 },
                 callType: voiceCall.callType,
