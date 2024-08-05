@@ -88,7 +88,6 @@ export default function Main() {
     useEffect(() => {
         if (socket.current && !socketEvent) {
             socket.current.on('message-recieve', (data) => {
-                console.log(data)
                 dispatch({
                     type: reducerCases.ADD_NEW_MESSAGE,
                     newMessage: {
@@ -107,6 +106,7 @@ export default function Main() {
             })
 
             socket.current.on("incoming-video-call", ({ from, roomId, callType }) => {
+                alert('incoming video call')
                 dispatch({
                     type: reducerCases.SET_INCOMING_VIDEO_CALL,
                     incomingVideoCall: {

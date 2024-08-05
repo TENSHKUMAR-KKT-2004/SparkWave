@@ -113,13 +113,13 @@ export const reducer = (state, action) => {
         case reducerCases.SET_INCOMING_VOICE_CALL:
             return {
                 ...state,
-                incomingVoiceCall: action.userContacts
+                incomingVoiceCall: action.incomingVoiceCall
             }
 
         case reducerCases.SET_INCOMING_VIDEO_CALL:
             return {
                 ...state,
-                incomingVideoCall: action.userContacts
+                incomingVideoCall: action.incomingVideoCall
             }
 
         default:
