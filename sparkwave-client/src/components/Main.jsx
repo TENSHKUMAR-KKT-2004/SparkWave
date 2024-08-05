@@ -13,6 +13,8 @@ import { reducerCases } from '@/context/constants'
 // import { reducerCases } from '@/context/constants'
 import { io } from 'socket.io-client'
 import SearchMessages from './chat/SearchMessages'
+import VideoCall from './call/VideoCall'
+import VoiceCall from './call/VoiceCall'
 
 export default function Main() {
     // const [redirectLogin, setRedirectLogin] = useState(false)
@@ -20,7 +22,7 @@ export default function Main() {
     const socket = useRef()
     const [socketEvent, setSocketEvent] = useState(false)
 
-    const [{ userInfo, currentChatUser, messagesSearch }, dispatch] = useStateProvider()
+    const [{ userInfo, currentChatUser, messagesSearch, videoCall, voiceCall, incomingVoiceCall, incomingVideoCall }, dispatch] = useStateProvider()
 
     // useEffect(() => {
     //     if (redirectLogin) {
@@ -112,17 +114,30 @@ export default function Main() {
 
     return (
         <>
+
+            {
+                videoCall && <div className="h-screen w-screen max-h-full overflow-hidden">
+                    <VideoCall />
+                </div>
+            }
+
+            {
+                voiceCall && <div className="h-screen w-screen max-h-full overflow-hidden">
+                    <VoiceCall />
+                </div>
+            }
+
             {/* grid-col-1 md:grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] */}
             <div className="grid grid-cols-[300px_1fr] lg:grid-cols-[400px_1fr] md:grid-cols-[300px_1fr]  h-screen w-screen max-h-screen max-w-full overflow-hidden">
                 <ChatList />
                 {
-                    currentChatUser ? 
-                    <div className={messagesSearch ? "grid grid-cols-2" : "grid-cols-2"}>
-                        <Chat />
-                        {
-                            messagesSearch && <SearchMessages />
-                        }
-                    </div> : <Empty />
+                    currentChatUser ?
+                        <div className={messagesSearch ? "grid grid-cols-2" : "grid-cols-2"}>
+                            <Chat />
+                            {
+                                messagesSearch && <SearchMessages />
+                            }
+                        </div> : <Empty />
                 }
 
             </div>
