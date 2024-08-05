@@ -18,7 +18,8 @@
     "react-dom": "^18",
     "react-icons": "^5.2.1",
     "socket.io-client": "^4.7.5",
-    "wavesurfer.js": "^7.8.2"
+    "wavesurfer.js": "^7.8.2",
+    "zego-express-engine-webrtc": "^2.24.5"
   },
   "devDependencies": {
     "eslint": "^8",

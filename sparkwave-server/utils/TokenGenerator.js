@@ -1,6 +1,6 @@
 "use strict";
 
-import crypto_1 from "crypto";
+const crypto = require("crypto");
 
 var ErrorCode; // Define enum for error codes
 (function (ErrorCode) {
@@ -40,7 +40,7 @@ function getAlgorithm(keyBase64) {
 }
 // AES encryption function using CBC/PKCS5Padding mode
 function aesEncrypt(plainText, key, iv) {
-  var cipher = crypto_1.createCipheriv(getAlgorithm(key), key, iv);
+  var cipher = crypto.createCipheriv(getAlgorithm(key), key, iv);
   cipher.setAutoPadding(true);
   var encrypted = cipher.update(plainText);
   var final = cipher.final();
@@ -48,7 +48,7 @@ function aesEncrypt(plainText, key, iv) {
   return Uint8Array.from(out).buffer;
 }
 // Function to generate token using given parameters
-export function generateToken04(
+function generateToken04(
   appId,
   userId,
   secret,
@@ -118,4 +118,8 @@ export function generateToken04(
   // console.log('-------getUint16----------', dv.getUint16(8));
   // console.log('-----------------');
   return "04" + Buffer.from(dv.buffer).toString("base64"); // Return final token string in Base64 format
+}
+
+module.exports = {
+    generateToken04
 }
