@@ -7,13 +7,13 @@ import ChatListItem from './ChatListItem'
 
 export default function List() {
 
-  const [{ userInfo, userContacts }, dispatch] = useStateProvider()
+  const [{ userInfo, userContacts, filteredContacts }, dispatch] = useStateProvider()
 
   useEffect(() => {
     const getContacts = async () => {
       try {
         const { data: { users, onlineUsers } } = await axios.get(`${GET_INITIAL_CONTACTS_ROUTE}/${userInfo.id}`)
-      
+
         dispatch({
           type: reducerCases.SET_USER_CONTACTS,
           userContacts: users
@@ -28,7 +28,7 @@ export default function List() {
       }
     }
 
-    if(userInfo?.id){
+    if (userInfo?.id) {
       getContacts()
     }
   }, [userInfo, dispatch])
@@ -36,7 +36,8 @@ export default function List() {
   return (
     <div className="bg-search-input-container-background flex-auto overflow-auto max-h-full custom-scrollbar">
       {
-        userContacts && userContacts.map((contact) => <ChatListItem key={contact.id} data={contact} />)
+        filteredContacts && filteredContacts.length > 0 ? filteredContacts.map(contact => <ChatListItem key={contact.id} data={contact} />) :
+          userContacts && userContacts.map((contact) => <ChatListItem key={contact.id} data={contact} />)
       }
     </div>
   )
