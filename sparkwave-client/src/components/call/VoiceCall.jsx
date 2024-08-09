@@ -15,8 +15,7 @@ export default function VoiceCall() {
                 profile_picture: userInfo.profileImage,
                 name: userInfo.name
                 },
-                callType: voiceCall.callType,
-                roomId: voiceCall.roomId
+                callType: voiceCall.callType
             }
         )
         }

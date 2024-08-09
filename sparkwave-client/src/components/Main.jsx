@@ -4,7 +4,7 @@ import Empty from './Empty'
 // import { onAuthStateChanged } from 'firebase/auth'
 // import { firebaseAuth } from '@/utils/firebaseConfig'
 // import { CHECK_USER_ROUTE } from '@/utils/apiRoutes'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 import { useStateProvider } from '@/context/stateContext'
 import Chat from './chat/Chat'
 import axios from 'axios'
@@ -17,10 +17,9 @@ import VideoCall from './call/VideoCall'
 import VoiceCall from './call/VoiceCall'
 import IncomingVoiceCall from './call/IncomingVoiceCall'
 import IncomingVideoCall from './call/IncomingVideoCall'
-
 export default function Main() {
     // const [redirectLogin, setRedirectLogin] = useState(false)
-    const router = useRouter()
+    // const router = useRouter()
     const socket = useRef()
     const [socketEvent, setSocketEvent] = useState(false)
 
@@ -76,6 +75,7 @@ export default function Main() {
     useEffect(() => {
         if (userInfo) {
             socket.current = io(HOST)
+
             socket.current.emit("add-user", userInfo.id)
 
             dispatch({
@@ -94,6 +94,13 @@ export default function Main() {
                         ...data.message
                     }
                 })
+            })
+
+            socket.current.on('online-users',(data)=>{
+                dispatch({
+                    type: reducerCases.SET_ONLINE_USERS,
+                    onlineUsers: data.onlineUsers
+                  })
             })
 
             socket.current.on("incoming-voice-call", ({ from, roomId, callType }) => {
@@ -115,12 +122,6 @@ export default function Main() {
             })
 
             socket.current.on('voice-call-rejected', () => {
-                dispatch({
-                    type: reducerCases.END_CALL
-                })
-            })
-
-            socket.current.on('video-call-rejected', () => {
                 dispatch({
                     type: reducerCases.END_CALL
                 })

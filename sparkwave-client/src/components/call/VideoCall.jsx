@@ -15,14 +15,13 @@ export default function VideoCall() {
                 profile_picture: userInfo.profileImage,
                 name: userInfo.name
                 },
-                callType: videoCall.callType,
-                roomId: videoCall.roomId
+                callType: videoCall.callType
             }
         )
         }
     }, [videoCall])
 
     return (
-        <Container data={videoCall} />
+         <Container data={videoCall} />
     )
 }

@@ -2,7 +2,6 @@ const express = require('express')
 const dotenv = require('dotenv')
 const cors = require('cors')
 const {Server} = require('socket.io')
-
 dotenv.config()
 const app = express()
 
@@ -36,6 +35,27 @@ io.on("connection",(socket)=>{
 
     socket.on("add-user",(userId)=>{
         onlineUsers.set(userId, socket.id)
+        const onlineUsersObject = Object.fromEntries(global.onlineUsers)
+
+        io.emit('online-users', { onlineUsers: onlineUsersObject })
+    })
+
+    socket.on("user-call", ({ to, offer }) => {
+        io.to(to).emit("incomming-call", { from: socket.id, offer })
+    })
+
+    socket.on("call-accepted", ({ to, ans }) => {
+        io.to(to).emit("call-accepted", { from: socket.id, ans })
+    })
+
+    socket.on("peer-nego-needed", ({ to, offer }) => {
+        console.log("peer:nego:needed", offer)
+        io.to(to).emit("peer-nego-needed", { from: socket.id, offer })
+    })
+
+    socket.on("peer-nego-done", ({ to, ans }) => {
+        console.log("peer-nego-done", ans)
+        io.to(to).emit("peer-nego-final", { from: socket.id, ans })
     })
 
     socket.on("send-message",(data)=>{
@@ -53,7 +73,7 @@ io.on("connection",(socket)=>{
         
         if(sendUserSocket){
             socket.to(sendUserSocket).emit("incoming-voice-call",{
-                from: data.from, roomId: data.roomId, callType: data.callType
+                from: data.from, callType: data.callType
             })
         }
     })
@@ -63,7 +83,7 @@ io.on("connection",(socket)=>{
 
         if(sendUserSocket){
             socket.to(sendUserSocket).emit("incoming-video-call",{
-                from: data.from, roomId: data.roomId, callType: data.callType
+                from: data.from, callType: data.callType
             })
         }
     })

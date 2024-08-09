@@ -229,8 +229,7 @@ const getInitialContactsWithMessages = async (req, res) => {
         }
 
         return res.status(200).json({
-            users: Array.from(users.values()),
-            onlineUsers: Array.from(onlineUsers.keys())
+            users: Array.from(users.values())
         })
     } catch (err) {
         console.log(err)

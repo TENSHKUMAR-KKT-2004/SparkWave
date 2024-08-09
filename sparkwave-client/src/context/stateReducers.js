@@ -121,7 +121,7 @@ export const reducer = (state, action) => {
                 ...state,
                 incomingVideoCall: action.incomingVideoCall
             }
-
+            
         default:
             return state
     }
