@@ -7,9 +7,10 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import { useStateProvider } from '@/context/stateContext'
 import { reducerCases } from '@/context/constants'
 import ContextMenu from '../common/ContextMenu'
+import { toast } from 'react-toastify'
 
 export default function ChatHeader() {
-  const [{ currentChatUser, onlineUsers }, dispatch] = useStateProvider()
+  const [{ currentChatUser, userInfo, onlineUsers }, dispatch] = useStateProvider()
   const [userName, setUserName] = useState('')
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false)
   const [contextMenuCo_ords, setContextMenuCo_ords] = useState({ x: 0, y: 0 })
@@ -19,7 +20,7 @@ export default function ChatHeader() {
   }, [currentChatUser])
 
   const handleVoiceCall = () => {
-    dispatch({
+    onlineUsers[currentChatUser.id] ? dispatch({
       type: reducerCases.SET_VOICE_CALL,
       voiceCall: {
         ...currentChatUser,
@@ -27,7 +28,7 @@ export default function ChatHeader() {
         callType: 'voice',
         roomId: Date.now()
       }
-    })
+    })  : toast.error('The user is currently offline. Please try again later')
   }
 
   const showContextMenu = (e) => {
@@ -45,7 +46,7 @@ export default function ChatHeader() {
   ]
 
   const handleVideoCall = () => {
-    dispatch({
+    onlineUsers[currentChatUser.id] ? dispatch({
       type: reducerCases.SET_VIDEO_CALL,
       videoCall: {
         ...currentChatUser,
@@ -53,7 +54,7 @@ export default function ChatHeader() {
         callType: 'video',
         roomId: Date.now()
       }
-    })
+    }) : toast.error('The user is currently offline. Please try again later')
   }
 
   return (
@@ -61,12 +62,12 @@ export default function ChatHeader() {
       <div className="flex items-center justify-center gap-6">
         <Avatar type="sm" image={currentChatUser?.profile_picture} />
         <div className="flex flex-col">
-          <span className="text-primary-strong">{userName}</span>
+          <span className="text-primary-strong">{userInfo.id === currentChatUser.id ? "You" : userName}</span>
           <span className="text-secondary text-sm">{onlineUsers[currentChatUser.id] ? 'Online' : 'Offline'}</span>
         </div>
       </div>
       <div className="flex gap-6">
-        <MdCall
+      {userInfo.id !== currentChatUser.id && <> <MdCall
           className="text-panel-header-icon cursor-pointer text-xl"
           onClick={handleVoiceCall}
         />
@@ -74,6 +75,8 @@ export default function ChatHeader() {
           className="text-panel-header-icon cursor-pointer text-xl"
           onClick={handleVideoCall}
         />
+        </>
+      }
         <BiSearchAlt2
           className="text-panel-header-icon cursor-pointer text-xl"
           onClick={() => dispatch({ type: reducerCases.SET_MESSAGE_SEARCH })}

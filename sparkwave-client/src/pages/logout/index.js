@@ -4,6 +4,7 @@ import { firebaseAuth } from '@/utils/firebaseConfig'
 import { signOut } from 'firebase/auth'
 import { useRouter } from 'next/router'
 import React,{ useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 export default function index() {
     const [{socket, userInfo}, dispatch ] = useStateProvider()
@@ -18,11 +19,14 @@ export default function index() {
 
         signOut(firebaseAuth)
 
+        toast.success("You have been logged out successfully!")
+
         localStorage.removeItem('appState')
 
         router.push('/login')
     }, [socket])
   return (
-    <div className="bg-conversation-panel-background"></div>
+    <div className="bg-conversation-panel-background">
+    </div>
   )
 }

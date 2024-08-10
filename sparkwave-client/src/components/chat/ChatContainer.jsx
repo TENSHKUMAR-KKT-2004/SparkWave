@@ -1,6 +1,6 @@
 import { useStateProvider } from '@/context/stateContext'
 import { calculateTime } from '@/utils/calculateTime'
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import MessageStatus from '../common/MessageStatus'
 import ImageMessage from './ImageMessage'
 
@@ -9,6 +9,15 @@ const VoiceMessage = dynamic(()=> import('./VoiceMessage'), {ssr: false})
 
 export default function ChatContainer() {
   const [{ messages, currentChatUser, userInfo }] = useStateProvider()
+
+  const messagesEndRef = useRef(null)
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [messages])
+
   return (
     <div className="h-[80vh] w-full relative flex-grow overflow-auto custom-scrollbar">
       <div className="bg-chat-background bg-fixed h-full w-full opacity-5 fixed z-0"></div>
@@ -49,6 +58,7 @@ export default function ChatContainer() {
                   )
                 })
               }
+              <div ref={messagesEndRef} />
             </div>
           </div>
         </div>

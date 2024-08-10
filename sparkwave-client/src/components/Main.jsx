@@ -4,7 +4,7 @@ import Empty from './Empty'
 // import { onAuthStateChanged } from 'firebase/auth'
 // import { firebaseAuth } from '@/utils/firebaseConfig'
 // import { CHECK_USER_ROUTE } from '@/utils/apiRoutes'
-// import { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { useStateProvider } from '@/context/stateContext'
 import Chat from './chat/Chat'
 import axios from 'axios'
@@ -17,13 +17,24 @@ import VideoCall from './call/VideoCall'
 import VoiceCall from './call/VoiceCall'
 import IncomingVoiceCall from './call/IncomingVoiceCall'
 import IncomingVideoCall from './call/IncomingVideoCall'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 export default function Main() {
     // const [redirectLogin, setRedirectLogin] = useState(false)
-    // const router = useRouter()
+    const router = useRouter()
     const socket = useRef()
     const [socketEvent, setSocketEvent] = useState(false)
 
-    const [{ userInfo, currentChatUser, messagesSearch, videoCall, voiceCall, incomingVoiceCall, incomingVideoCall }, dispatch] = useStateProvider()
+    const [{ userInfo, onBoarded, currentChatUser, messagesSearch, videoCall, voiceCall, incomingVoiceCall, incomingVideoCall }, dispatch] = useStateProvider()
+
+    useEffect(() => {
+        if(!userInfo?.email && !onBoarded){
+            router.push("/login")
+        } else if(userInfo?.email && !onBoarded){
+            router.push('/onboarding')
+        }
+    }, [userInfo, onBoarded, router])
 
     // useEffect(() => {
     //     if (redirectLogin) {

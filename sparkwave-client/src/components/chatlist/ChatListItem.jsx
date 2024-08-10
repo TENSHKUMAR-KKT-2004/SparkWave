@@ -37,7 +37,7 @@ export default function ChatListItem({ data, isContactsPage = false }) {
             <div className="min-h-full flex flex-col justify-center mt-3 pr-2 w-full">
                 <div className="flex justify-between ">
                     <div>
-                        <span className="text-white">{data?.name}</span>
+                        <span className="text-white">{userInfo.id === data?.id ? "You" : data?.name}</span>
                     </div>
                     {
                         !isContactsPage && 
