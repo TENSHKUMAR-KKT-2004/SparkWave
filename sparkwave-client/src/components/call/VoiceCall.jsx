@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import dynamic from 'next/dynamic'
 import { useStateProvider } from '@/context/stateContext'
-const Container = dynamic(()=> import('./Container'),{ssr:false})
+const VoiceCallContainer = dynamic(()=> import('./VoiceCallContainer'),{ssr:false})
 
 export default function VoiceCall() {
     const [{voiceCall,socket,userInfo}] = useStateProvider()
@@ -22,6 +22,6 @@ export default function VoiceCall() {
     }, [voiceCall])
     
     return ( 
-      <Container data={voiceCall} />
+      <VoiceCallContainer data={voiceCall} />
     )
 }
