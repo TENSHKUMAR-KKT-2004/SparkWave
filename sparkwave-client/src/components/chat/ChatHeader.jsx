@@ -6,10 +6,13 @@ import { BiSearchAlt2 } from 'react-icons/bi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { useStateProvider } from '@/context/stateContext'
 import { reducerCases } from '@/context/constants'
+import ContextMenu from '../common/ContextMenu'
 
 export default function ChatHeader() {
-  const [{ currentChatUser }, dispatch] = useStateProvider()
-  const [userName, setUserName] = useState('');
+  const [{ currentChatUser, onlineUsers }, dispatch] = useStateProvider()
+  const [userName, setUserName] = useState('')
+  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false)
+  const [contextMenuCo_ords, setContextMenuCo_ords] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     setUserName(currentChatUser?.name)
@@ -26,6 +29,20 @@ export default function ChatHeader() {
       }
     })
   }
+
+  const showContextMenu = (e) => {
+    e.preventDefault()
+    setContextMenuCo_ords({ x: e.pageX - 50, y: e.pageY + 20 })
+    setIsContextMenuVisible(true)
+  }
+
+  const contextMenuOptions = [
+    {
+      name: "Exit", callback: () => {
+        dispatch({ type: reducerCases.SET_EXIT_CHAT })
+      }
+    },
+  ]
 
   const handleVideoCall = () => {
     dispatch({
@@ -45,7 +62,7 @@ export default function ChatHeader() {
         <Avatar type="sm" image={currentChatUser?.profile_picture} />
         <div className="flex flex-col">
           <span className="text-primary-strong">{userName}</span>
-          <span className="text-secondary text-sm">Online/Offline</span>
+          <span className="text-secondary text-sm">{onlineUsers[currentChatUser.id] ? 'Online' : 'Offline'}</span>
         </div>
       </div>
       <div className="flex gap-6">
@@ -63,7 +80,19 @@ export default function ChatHeader() {
         />
         <BsThreeDotsVertical
           className="text-panel-header-icon cursor-pointer text-xl"
+          id="context-opener"
+          onClick={(e)=> showContextMenu(e)}
         />
+        {
+          isContextMenuVisible && (
+            <ContextMenu
+            options={contextMenuOptions}
+            cordinates={contextMenuCo_ords}
+            contextMenu={isContextMenuVisible}
+            setContextMenu={setIsContextMenuVisible}
+            />
+          )
+        }
       </div>
     </div>
   )

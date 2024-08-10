@@ -121,12 +121,6 @@ export default function Main() {
                 })
             })
 
-            socket.current.on('voice-call-rejected', () => {
-                dispatch({
-                    type: reducerCases.END_CALL
-                })
-            })
-
             setSocketEvent(true)
         }
     }, [socket.current])

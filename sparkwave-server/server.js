@@ -40,6 +40,13 @@ io.on("connection",(socket)=>{
         io.emit('online-users', { onlineUsers: onlineUsersObject })
     })
 
+    socket.on('signout', (id)=>{
+        onlineUsers.delete(id)
+        const onlineUsersObject = Object.fromEntries(global.onlineUsers)
+
+        io.emit('online-users', { onlineUsers: onlineUsersObject })
+    })
+
     socket.on("user-call", ({ to, offer }) => {
         io.to(to).emit("incomming-call", { from: socket.id, offer })
     })
