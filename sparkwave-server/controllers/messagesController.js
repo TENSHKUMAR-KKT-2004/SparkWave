@@ -236,10 +236,40 @@ const getInitialContactsWithMessages = async (req, res) => {
     }
 }
 
+const updateMessageStatus = async (req, res) => {
+    try {
+        const { senderId, receiverId } = req.body
+
+        if (!senderId || !receiverId) {
+            return res.status(400).json({ error: 'Sender ID and Receiver ID are required' })
+        }
+
+        const updatedMessages = await prisma.messages.updateMany({
+            where: {
+                senderId: senderId,
+                recieverId: receiverId,
+                messageStatus: 'sent',
+            },
+            data: {
+                messageStatus: 'read',
+            },
+        })
+
+        return res.status(200).json({
+            message: 'Message status updated successfully',
+            count: updatedMessages.count,
+        })
+    } catch (error) {
+        console.error('Error updating message status:', error)
+        return res.status(500).json({ error: 'Internal Server Error' })
+    }
+}
+
 module.exports = {
     addMessages,
     getMessages,
     addImageMessage,
     addAudioMessage,
-    getInitialContactsWithMessages
+    getInitialContactsWithMessages,
+    updateMessageStatus
 }

@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 import { useStateProvider } from '@/context/stateContext'
 import Chat from './chat/Chat'
 import axios from 'axios'
-import { GET_MESSAGES_ROUTE, HOST } from '@/utils/apiRoutes'
+import { GET_MESSAGES_ROUTE, HOST, UPDATE_MESSAGE_STATUS } from '@/utils/apiRoutes'
 import { reducerCases } from '@/context/constants'
 // import { reducerCases } from '@/context/constants'
 import { io } from 'socket.io-client'
@@ -17,21 +17,21 @@ import VideoCall from './call/VideoCall'
 import VoiceCall from './call/VoiceCall'
 import IncomingVoiceCall from './call/IncomingVoiceCall'
 import IncomingVideoCall from './call/IncomingVideoCall'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 
 export default function Main() {
     // const [redirectLogin, setRedirectLogin] = useState(false)
     const router = useRouter()
     const socket = useRef()
     const [socketEvent, setSocketEvent] = useState(false)
+    const [handleMessage, setHandleMessage] = useState(false)
+    const [messageData, setMessageData] = useState(null)
 
-    const [{ userInfo, onBoarded, currentChatUser, messagesSearch, videoCall, voiceCall, incomingVoiceCall, incomingVideoCall }, dispatch] = useStateProvider()
+    const [{ userInfo, messages, onBoarded, currentChatUser, messagesSearch, videoCall, voiceCall, incomingVoiceCall, incomingVideoCall }, dispatch] = useStateProvider()
 
     useEffect(() => {
-        if(!userInfo?.email && !onBoarded){
+        if (!userInfo?.email && !onBoarded) {
             router.push("/login")
-        } else if(userInfo?.email && !onBoarded){
+        } else if (userInfo?.email && !onBoarded) {
             router.push('/onboarding')
         }
     }, [userInfo, onBoarded, router])
@@ -96,22 +96,59 @@ export default function Main() {
         }
     }, [userInfo])
 
+    const handleMessageReceive = (data) => {
+        if (!currentChatUser) return;
+
+        const isFromCurrentChatUser = data.message.senderId === currentChatUser.id;
+        // if (messages.length > 0) {
+        //     const isMessagesUser = messages[0].receiverId === data.message.receiverId && messages[0].senderId === data.message.senderId;
+        //     console.log(messages[0], data.message);
+        //     alert(isMessagesUser);
+        // }
+
+        if (isFromCurrentChatUser) {
+            dispatch({
+                type: reducerCases.ADD_NEW_MESSAGE,
+                newMessage: {
+                    ...data.message
+                }
+            });
+        }
+        setHandleMessage(false);
+        setMessageData(null);
+    }
+
     useEffect(() => {
         if (socket.current && !socketEvent) {
             socket.current.on('message-recieve', (data) => {
                 dispatch({
-                    type: reducerCases.ADD_NEW_MESSAGE,
+                    type: reducerCases.UPDATE_USER_CONTACTS,
                     newMessage: {
                         ...data.message
-                    }
+                    },
+                    fromSelf: false,
+                    user: data.user
                 })
+
+                setHandleMessage(true)
+                setMessageData(data)
+            }
+            )
+
+            socket.current.on('message-readed', async (chatUser) => {
+                dispatch({
+                    type: reducerCases.UPDATE_MESSAGE_STATUS,
+                    userID: chatUser
+                })
+
+                const response = await axios.post(UPDATE_MESSAGE_STATUS,{senderId: userInfo.id, receiverId: chatUser.chatUser})
             })
 
-            socket.current.on('online-users',(data)=>{
+            socket.current.on('online-users', (data) => {
                 dispatch({
                     type: reducerCases.SET_ONLINE_USERS,
                     onlineUsers: data.onlineUsers
-                  })
+                })
             })
 
             socket.current.on("incoming-voice-call", ({ from, roomId, callType }) => {
@@ -134,7 +171,7 @@ export default function Main() {
 
             setSocketEvent(true)
         }
-    }, [socket.current])
+    }, [messages, socket.current])
 
     useEffect(() => {
         const getMessages = async () => {
@@ -147,8 +184,12 @@ export default function Main() {
         }
         if (currentChatUser?.id) {
             getMessages()
+
+            if (handleMessage) {
+                handleMessageReceive(messageData)
+            }
         }
-    }, [currentChatUser])
+    }, [currentChatUser, messageData, handleMessage])
 
     return (
         <>

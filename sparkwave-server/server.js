@@ -2,6 +2,8 @@ const express = require('express')
 const dotenv = require('dotenv')
 const cors = require('cors')
 const {Server} = require('socket.io')
+// const { Client } = require('pg')
+
 dotenv.config()
 const app = express()
 
@@ -68,9 +70,14 @@ io.on("connection",(socket)=>{
         if(sendUserSocket){
             socket.to(sendUserSocket).emit('message-recieve',{
                 from: data.from,
-                message: data.message
+                message: data.message,
+                user: data.user
             })
         }
+    })
+
+    socket.on('message-status', ({from, to})=>{
+        io.to(to).emit('message-readed',{chatUser: from})
     })
 
     socket.on('outgoing-voice-call',(data)=>{
@@ -115,3 +122,17 @@ io.on("connection",(socket)=>{
         }
     })
 })
+
+// PostgreSQL client setup for notifications
+// const pgClient = new Client({
+//     connectionString: process.env.DATABASE_URL,
+// })
+
+// pgClient.connect()
+// pgClient.query('LISTEN message_update')
+
+// pgClient.on('notification', (msg) => {
+//     const payload = JSON.parse(msg.payload)
+
+//     io.emit('message_update', payload)
+// })

@@ -70,7 +70,8 @@ export default function MessageBar() {
         socket.current.emit('send-message', {
           to: currentChatUser.id,
           from: userInfo.id,
-          message: res.data.message
+          message: res.data.message,
+          user: userInfo
         })
 
         dispatch({
@@ -78,7 +79,17 @@ export default function MessageBar() {
           newMessage: {
             ...res.data.message
           },
-          fromSelf: true
+        })
+
+        dispatch({
+          type: reducerCases.UPDATE_USER_CONTACTS,
+          newMessage: {
+            ...res.data.message,
+            senderId: userInfo.id,
+            recieverId: currentChatUser.id,
+          },
+          fromSelf: true,
+          user : currentChatUser
         })
 
         setMessage('')
@@ -107,15 +118,26 @@ export default function MessageBar() {
       socket.current.emit('send-message', {
         to: currentChatUser.id,
         from: userInfo.id,
-        message: data.message
+        message: data.message,
+        user: userInfo
       })
 
       dispatch({
         type: reducerCases.ADD_NEW_MESSAGE,
         newMessage: {
           ...data.message
+        }
+      })
+
+      dispatch({
+        type: reducerCases.UPDATE_USER_CONTACTS,
+        newMessage: {
+          ...data.message,
+          senderId: userInfo.id,
+          recieverId: currentChatUser.id,
         },
-        fromSelf: true
+        fromSelf: true,
+        user : currentChatUser
       })
 
       setMessage('')
