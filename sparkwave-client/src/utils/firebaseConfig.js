@@ -2,14 +2,14 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth"
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAh_b2W5MBXNBGBA_QHhlqi_rZyYskBG5c",
-    authDomain: "sparkwave-25240.firebaseapp.com",
-    projectId: "sparkwave-25240",
-    storageBucket: "sparkwave-25240.appspot.com",
-    messagingSenderId: "1012181283508",
-    appId: "1:1012181283508:web:255b52d8a6933962759de1",
-    measurementId: "G-49BB7TM5MB"
-};
+    apiKey: process.env.NEXT_PUBLIC_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_APP_ID,
+    measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID
+}
 
 const app = initializeApp(firebaseConfig)
 export const firebaseAuth = getAuth(app)

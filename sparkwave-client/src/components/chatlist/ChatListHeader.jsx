@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Avatar from '../common/avatar'
 import { useStateProvider } from '@/context/stateContext'
 import { BsFillChatLeftTextFill, BsThreeDotsVertical } from 'react-icons/bs'
@@ -13,13 +13,13 @@ export default function ChatListHeader() {
 
   const router = useRouter()
 
-  const handleAllContactsPage = ()=>{
-    dispatch({type: reducerCases.SET_ALL_CONTACTS_PAGE })
+  const handleAllContactsPage = () => {
+    dispatch({ type: reducerCases.SET_ALL_CONTACTS_PAGE })
   }
 
   const showContextMenu = (e) => {
     e.preventDefault()
-    setContextMenuCo_ords({ x: e.pageX, y: e.pageY})
+    setContextMenuCo_ords({ x: e.pageX, y: e.pageY })
     setIsContextMenuVisible(true)
   }
 
@@ -35,31 +35,31 @@ export default function ChatListHeader() {
   return (
     <div className="h-16 px-4 flex justify-between items-center">
       <div className="curser-pointer">
-        <Avatar type={'sm'} image={userInfo?.profileImage}/>
+        <Avatar type={'sm'} image={userInfo?.profileImage} />
       </div>
       <div className="flex gap-6">
-        <BsFillChatLeftTextFill 
-        className="text-panel-header-icon cursor-pointer text-xl"
-        title='New Chat'
-        onClick={handleAllContactsPage}
+        <BsFillChatLeftTextFill
+          className="text-panel-header-icon cursor-pointer text-xl"
+          title='New Chat'
+          onClick={handleAllContactsPage}
         />
         <>
-        <BsThreeDotsVertical 
-        className="text-panel-header-icon cursor-pointer text-xl"
-        title='Menu'
-        id="context-opener"
-        onClick={(e)=> showContextMenu(e)}
-        />
-        {
-          isContextMenuVisible && (
-            <ContextMenu
-            options={contextMenuOptions}
-            cordinates={contextMenuCo_ords}
-            contextMenu={isContextMenuVisible}
-            setContextMenu={setIsContextMenuVisible}
-            />
-          )
-        }
+          <BsThreeDotsVertical
+            className="text-panel-header-icon cursor-pointer text-xl"
+            title='Menu'
+            id="context-opener"
+            onClick={(e) => showContextMenu(e)}
+          />
+          {
+            isContextMenuVisible && (
+              <ContextMenu
+                options={contextMenuOptions}
+                cordinates={contextMenuCo_ords}
+                contextMenu={isContextMenuVisible}
+                setContextMenu={setIsContextMenuVisible}
+              />
+            )
+          }
         </>
       </div>
     </div>

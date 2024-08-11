@@ -13,17 +13,17 @@ export default function App({ Component, pageProps }) {
                 <link rel="shortcut icon" href="/favicon.png" />
             </Head>
 
-            <ToastContainer 
-                position="top-right" 
-                autoClose={5000} 
-                hideProgressBar={false} 
-                newestOnTop={false} 
-                closeOnClick 
-                rtl={false} 
-                pauseOnFocusLoss 
-                draggable 
-                pauseOnHover 
-                theme="light" 
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
             />
 
             <Component {...pageProps} />

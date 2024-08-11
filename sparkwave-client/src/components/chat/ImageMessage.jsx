@@ -24,7 +24,6 @@ const ImageMessage = ({ message }) => {
     const reorderedImageUrls = imageUrls.filter(img => img.id === message.id)
       .concat(imageUrls.filter(img => img.id !== message.id));
 
-      console.log(reorderedImageUrls)
     setImageURLS(reorderedImageUrls)
   }, [messages])
 

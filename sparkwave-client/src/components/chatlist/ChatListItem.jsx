@@ -11,15 +11,15 @@ export default function ChatListItem({ data, isContactsPage = false }) {
     const [{ userInfo, currentChatUser }, dispatch] = useStateProvider()
     const handleContactClick = () => {
         if (!isContactsPage) {
-            dispatch({ 
-                type: reducerCases.CHANGE_CURRENT_CHAT_USER, 
-                user: { 
+            dispatch({
+                type: reducerCases.CHANGE_CURRENT_CHAT_USER,
+                user: {
                     name: data.name,
                     about: data.about,
                     profile_picture: data.profile_picture,
                     email: data.email,
                     id: userInfo.id === data.senderId ? data.recieverId : data.senderId
-                } 
+                }
             })
         } else {
             dispatch({ type: reducerCases.CHANGE_CURRENT_CHAT_USER, user: { ...data } })
@@ -41,7 +41,7 @@ export default function ChatListItem({ data, isContactsPage = false }) {
                         <span className="text-white">{userInfo.id === data?.id ? "You" : data?.name}</span>
                     </div>
                     {
-                        !isContactsPage && 
+                        !isContactsPage &&
                         <div >
                             <span className={`${!data.totalUnreadMessages > 0 ? 'text-secondary' : 'text-icon-green'} text-sm`}>
                                 {calculateTime(data.createdAt)}
@@ -53,32 +53,32 @@ export default function ChatListItem({ data, isContactsPage = false }) {
                     <div className="flex justify-between w-full">
                         <span className="text-secondary line-clamp-1 text-sm">
                             {
-                                isContactsPage ? 
-                                data?.about || "\u00A0" :
-                                <div 
-                                className="flex items-center gap-1 max-w-[200px] xl:max-w-[300px] sm:max-w-[250px] md:max-w-[300px] lg:max-w-[200px]">
-                                    {
-                                        data.senderId === userInfo.id && <MessageStatus messageStatus={data.messageStatus} />
-                                    }
-                                    {
-                                        data.type === 'text' && <span className="truncate">{data.message}</span>
-                                    }
-                                    {
-                                        data.type === 'image' && <span className="flex gap-1 items-center">
-                                            <FaCamera className="text-panel-header-icon" /> Image
-                                        </span>
-                                    }
-                                    {
-                                        data.type === 'audio' && <span className="flex gap-1 items-center">
-                                            <FaMicrophone className="text-panel-header-icon" /> Audio
-                                        </span>
-                                    }
-                                    {
-                                        data.type === 'gif' && <span className="flex gap-1 items-center">
-                                            <RiFileGifFill className="text-panel-header-icon text-lg" /> Gif
-                                        </span>
-                                    }
-                                </div>
+                                isContactsPage ?
+                                    data?.about || "\u00A0" :
+                                    <div
+                                        className="flex items-center gap-1 max-w-[200px] xl:max-w-[300px] sm:max-w-[250px] md:max-w-[300px] lg:max-w-[200px]">
+                                        {
+                                            data.senderId === userInfo.id && <MessageStatus messageStatus={data.messageStatus} />
+                                        }
+                                        {
+                                            data.type === 'text' && <span className="truncate">{data.message}</span>
+                                        }
+                                        {
+                                            data.type === 'image' && <span className="flex gap-1 items-center">
+                                                <FaCamera className="text-panel-header-icon" /> Image
+                                            </span>
+                                        }
+                                        {
+                                            data.type === 'audio' && <span className="flex gap-1 items-center">
+                                                <FaMicrophone className="text-panel-header-icon" /> Audio
+                                            </span>
+                                        }
+                                        {
+                                            data.type === 'gif' && <span className="flex gap-1 items-center">
+                                                <RiFileGifFill className="text-panel-header-icon text-lg" /> Gif
+                                            </span>
+                                        }
+                                    </div>
                             }
                         </span>
                         {

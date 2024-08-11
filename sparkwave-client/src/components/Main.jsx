@@ -97,14 +97,9 @@ export default function Main() {
     }, [userInfo])
 
     const handleMessageReceive = (data) => {
-        if (!currentChatUser) return;
+        if (!currentChatUser) return
 
-        const isFromCurrentChatUser = data.message.senderId === currentChatUser.id;
-        // if (messages.length > 0) {
-        //     const isMessagesUser = messages[0].receiverId === data.message.receiverId && messages[0].senderId === data.message.senderId;
-        //     console.log(messages[0], data.message);
-        //     alert(isMessagesUser);
-        // }
+        const isFromCurrentChatUser = data.message.senderId === currentChatUser.id
 
         if (isFromCurrentChatUser) {
             dispatch({
@@ -112,10 +107,10 @@ export default function Main() {
                 newMessage: {
                     ...data.message
                 }
-            });
+            })
         }
-        setHandleMessage(false);
-        setMessageData(null);
+        setHandleMessage(false)
+        setMessageData(null)
     }
 
     useEffect(() => {
@@ -141,7 +136,7 @@ export default function Main() {
                     userID: chatUser
                 })
 
-                const response = await axios.post(UPDATE_MESSAGE_STATUS,{senderId: userInfo.id, receiverId: chatUser.chatUser})
+                const response = await axios.post(UPDATE_MESSAGE_STATUS, { senderId: userInfo.id, receiverId: chatUser.chatUser })
             })
 
             socket.current.on('online-users', (data) => {

@@ -3,28 +3,28 @@ import { useStateProvider } from '@/context/stateContext'
 import { firebaseAuth } from '@/utils/firebaseConfig'
 import { signOut } from 'firebase/auth'
 import { useRouter } from 'next/router'
-import React,{ useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { toast } from 'react-toastify'
 
 export default function index() {
-    const [{socket, userInfo}, dispatch ] = useStateProvider()
-    const router = useRouter()
-    
-    useEffect(()=>{
-        socket.current.emit("signout", userInfo.id)
-        dispatch({
-            type: reducerCases.SET_USER_INFO,
-            userInfo: undefined
-        })
+  const [{ socket, userInfo }, dispatch] = useStateProvider()
+  const router = useRouter()
 
-        signOut(firebaseAuth)
+  useEffect(() => {
+    socket.current.emit("signout", userInfo.id)
+    dispatch({
+      type: reducerCases.SET_USER_INFO,
+      userInfo: undefined
+    })
 
-        toast.success("You have been logged out successfully!")
+    signOut(firebaseAuth)
 
-        localStorage.removeItem('appState')
+    toast.success("You have been logged out successfully!")
 
-        router.push('/login')
-    }, [socket])
+    localStorage.removeItem('appState')
+
+    router.push('/login')
+  }, [socket])
   return (
     <div className="bg-conversation-panel-background">
     </div>

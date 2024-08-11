@@ -7,32 +7,32 @@ import ContactList from './ContactList'
 
 export default function ChatList() {
   const [{ contactsPage }] = useStateProvider()
-  const [pageType,setPageType] = useState("default")
+  const [pageType, setPageType] = useState("default")
 
-  useEffect(()=>{
-    if(contactsPage){
+  useEffect(() => {
+    if (contactsPage) {
       setPageType('all-contacts')
-    }else{
+    } else {
       setPageType("default")
     }
   }, [contactsPage])
 
   return (
     <div className="bg-panel-header-background flex flex-col max-h-screen z-20">
-        {
-          pageType === "default" && 
+      {
+        pageType === "default" &&
         <>
-        <ChatListHeader />
-        <SearchBar />
-        <List />
+          <ChatListHeader />
+          <SearchBar />
+          <List />
         </>
-        }
-        {
-          pageType === "all-contacts" &&
-          <>
-            <ContactList />
-          </>
-        }
+      }
+      {
+        pageType === "all-contacts" &&
+        <>
+          <ContactList />
+        </>
+      }
     </div>
   )
 }

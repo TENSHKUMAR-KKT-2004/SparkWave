@@ -5,7 +5,7 @@ import peer from '../../service/peer';
 import Avatar from '../common/avatar';
 import { reducerCases } from '@/context/constants';
 
-export default function Container({ data }) {
+export default function VideoCallContainer({ data }) {
     const [{ socket, onlineUsers }, dispatch] = useStateProvider()
     const [localStream, setLocalStream] = useState(null)
     const [remoteStream, setRemoteStream] = useState(null)

@@ -28,7 +28,7 @@ export default function ChatHeader() {
         callType: 'voice',
         roomId: Date.now()
       }
-    })  : toast.error('The user is currently offline. Please try again later')
+    }) : toast.error('The user is currently offline. Please try again later')
   }
 
   const showContextMenu = (e) => {
@@ -67,16 +67,16 @@ export default function ChatHeader() {
         </div>
       </div>
       <div className="flex gap-6">
-      {userInfo.id !== currentChatUser.id && <> <MdCall
+        {userInfo.id !== currentChatUser.id && <> <MdCall
           className="text-panel-header-icon cursor-pointer text-xl"
           onClick={handleVoiceCall}
         />
-        <IoVideocam
-          className="text-panel-header-icon cursor-pointer text-xl"
-          onClick={handleVideoCall}
-        />
+          <IoVideocam
+            className="text-panel-header-icon cursor-pointer text-xl"
+            onClick={handleVideoCall}
+          />
         </>
-      }
+        }
         <BiSearchAlt2
           className="text-panel-header-icon cursor-pointer text-xl"
           onClick={() => dispatch({ type: reducerCases.SET_MESSAGE_SEARCH })}
@@ -84,15 +84,15 @@ export default function ChatHeader() {
         <BsThreeDotsVertical
           className="text-panel-header-icon cursor-pointer text-xl"
           id="context-opener"
-          onClick={(e)=> showContextMenu(e)}
+          onClick={(e) => showContextMenu(e)}
         />
         {
           isContextMenuVisible && (
             <ContextMenu
-            options={contextMenuOptions}
-            cordinates={contextMenuCo_ords}
-            contextMenu={isContextMenuVisible}
-            setContextMenu={setIsContextMenuVisible}
+              options={contextMenuOptions}
+              cordinates={contextMenuCo_ords}
+              contextMenu={isContextMenuVisible}
+              setContextMenu={setIsContextMenuVisible}
             />
           )
         }

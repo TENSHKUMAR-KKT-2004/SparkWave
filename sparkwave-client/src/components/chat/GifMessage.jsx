@@ -18,7 +18,7 @@ export default function GifMessage({ message }) {
                     </span>
                     <span className="text-bubble-meta">
                         {
-                            message.senderId === userInfo.id && <MessageStatus messageStatus={message.messageStatus}/>
+                            message.senderId === userInfo.id && <MessageStatus messageStatus={message.messageStatus} />
                         }
                     </span>
                 </div>

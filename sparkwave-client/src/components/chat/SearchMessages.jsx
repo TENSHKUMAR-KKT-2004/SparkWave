@@ -10,15 +10,15 @@ export default function SearchMessages() {
   const [searchTerm, setSearchTerm] = useState("")
   const [searchMessages, setSearchMessages] = useState([])
 
-  useEffect(()=>{
-    if(searchTerm){
-      setSearchMessages(messages.filter(message=>
+  useEffect(() => {
+    if (searchTerm) {
+      setSearchMessages(messages.filter(message =>
         message.type === 'text' && message.message.includes(searchTerm)
-    ))
-    } else{
+      ))
+    } else {
       setSearchMessages([])
     }
-  },[searchTerm])
+  }, [searchTerm])
 
   return (
     <div className="border-conversation-border border-l w-full flex flex-col z-10 max-h-screen bg-conversation-panel-background">
@@ -40,10 +40,10 @@ export default function SearchMessages() {
               <div>
                 <input
                   type="text"
-                  placeholder="Search Message"
+                  placeholder="Search message"
                   className="bg-transparent text-sm focus:outline-none text-white w-full"
                   value={searchTerm}
-                  onChange={(e)=>setSearchTerm(e.target.value)}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
             </div>
@@ -55,14 +55,14 @@ export default function SearchMessages() {
           </span>
         </div>
         <div className="flex justify-center h-full flex-col">
+          {
+            searchTerm.length > 0 && !searchMessages.length && <span className="text-secondary w-full flex justify-center">
+              Nothing to find
+            </span>
+          }
+          <div className="flex flex-col w-full h-full">
             {
-              searchTerm.length > 0 &&  !searchMessages.length && <span className="text-secondary w-full flex justify-center">
-                Nothing to find
-              </span>
-            }
-            <div className="flex flex-col w-full h-full">
-            {
-              searchMessages.map((message) =>{
+              searchMessages.map((message) => {
                 return (
                   <div className="flex cursor-pointer flex-col justify-center w-full px-5 border-b-[0.1px] py-5 border-secondary hover:bg-background-default-hover">
                     <div className="text-sm text-secondary">
@@ -79,7 +79,7 @@ export default function SearchMessages() {
                 )
               })
             }
-            </div>
+          </div>
         </div>
       </div>
     </div>

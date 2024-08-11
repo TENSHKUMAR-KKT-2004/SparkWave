@@ -173,7 +173,7 @@ export default function MessageBar() {
       const { data } = await axios.post(SEND_GIF_MESSAGE_ROUTE, {
         to: currentChatUser.id,
         from: userInfo.id,
-        message : gif.preview.url
+        message: gif.preview.url
       })
 
       socket.current.emit('send-message', {

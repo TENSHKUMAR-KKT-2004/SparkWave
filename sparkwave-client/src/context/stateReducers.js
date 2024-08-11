@@ -79,7 +79,7 @@ export const reducer = (state, action) => {
                         message: newMessage.message,
                         createdAt: newMessage.createdAt,
                         totalUnreadMessages: contact.id === newMessage.senderId && !fromSelf
-                            ? contact.totalUnreadMessages+1
+                            ? contact.totalUnreadMessages + 1
                             : 0
                     }
                 }
@@ -143,15 +143,14 @@ export const reducer = (state, action) => {
 
             const updatedMessages = Array.isArray(state.messages) ? state.messages.map(msg => {
                 if (msg.recieverId === userID.chatUser && msg.messageStatus !== 'read') {
-                    return { 
-                        ...msg, 
-                        messageStatus: 'read' 
+                    return {
+                        ...msg,
+                        messageStatus: 'read'
                     }
                 }
                 return msg
             }) : state.messages
-        
-            // Update the userContacts state if the userID matches and there are unread messages
+
             const updateContacts = state.userContacts.map(contact => {
                 if (contact.id === userID.chatUser) {
                     return {
@@ -168,7 +167,7 @@ export const reducer = (state, action) => {
                 messages: updatedMessages,
                 userContacts: updateContacts
             }
-            
+
         case reducerCases.SET_MESSAGE_SEARCH:
             return {
                 ...state,

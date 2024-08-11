@@ -9,7 +9,7 @@ import { reducerCases } from '@/context/constants';
 import { useRouter } from 'next/router';
 
 export default function index() {
-    const [{ userInfo, newUser , onBoarded }, dispatch] = useStateProvider()
+    const [{ userInfo, newUser, onBoarded }, dispatch] = useStateProvider()
     const [name, setName] = useState(userInfo?.name || "")
     const [about, setAbout] = useState("")
     const [image, setImage] = useState('/default_avatar.png')
@@ -17,9 +17,9 @@ export default function index() {
     const router = useRouter()
 
     useEffect(() => {
-        if(!newUser && !userInfo?.email && !onBoarded){
+        if (!newUser && !userInfo?.email && !onBoarded) {
             router.push("/login")
-        } else if(!newUser && userInfo?.email && onBoarded){
+        } else if (!newUser && userInfo?.email && onBoarded) {
             router.push('/')
         }
     }, [newUser, userInfo, onBoarded, router])
@@ -45,24 +45,24 @@ export default function index() {
                         type: reducerCases.SET_USER_INFO,
                         userInfo: {
                             id: data.data.id,
-                            name, 
-                            email, 
-                            profileImage: image, 
+                            name,
+                            email,
+                            profileImage: image,
                             status: about
                         },
-                        onBoarded:true
+                        onBoarded: true
                     })
 
                     const serializedState = JSON.stringify({
-                        userInfo:{
-                        id: data.data.id,
-                        name,
-                        email,
-                        profileImage: image,
-                        status: about
+                        userInfo: {
+                            id: data.data.id,
+                            name,
+                            email,
+                            profileImage: image,
+                            status: about
                         },
                         newuser: false,
-                        onBoarded:true
+                        onBoarded: true
                     })
                     await localStorage.setItem('appState', serializedState)
 

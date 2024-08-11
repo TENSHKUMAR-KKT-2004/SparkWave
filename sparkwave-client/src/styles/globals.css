@@ -6,11 +6,11 @@
     grid-template-columns: 1fr 1fr;
   } */
 
-.custom-scrollbar::-webkit-scrollbar{
+.custom-scrollbar::-webkit-scrollbar {
   height: 8px !important;
   width: 8px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb{
+.custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: #ffffff3b;
 }

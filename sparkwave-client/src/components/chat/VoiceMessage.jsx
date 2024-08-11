@@ -39,13 +39,13 @@ export default function VoiceMessage({ message }) {
         }
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         const audioURL = `${HOST}/${message.message}`
         const audio = new Audio(audioURL)
 
         setAudioMessage(audio)
         waveform.current.load(audioURL)
-        waveform.current.on('ready', ()=>{
+        waveform.current.on('ready', () => {
             setTotalDuration(waveform.current.getDuration())
         })
     }, [message.message])
@@ -92,7 +92,7 @@ export default function VoiceMessage({ message }) {
     return (
         <div className={`flex items-center gap-5 text-white px-4 pr-2 py-4 text-sm rounded-md ${message.senderId === currentChatUser.id ? 'bg-incoming-background' : 'bg-outgoing-background'}`}>
             <div>
-            <Avatar type="lg" image={currentChatUser?.profile_picture} />
+                <Avatar type="lg" image={currentChatUser?.profile_picture} />
             </div>
             <div className="cursor-pointer text-xl">
                 {
@@ -105,7 +105,7 @@ export default function VoiceMessage({ message }) {
                 <div className="text-bubble-meta text-[11px] pt-1 flex justify-between absolute bottom-[-22px] w-full">
                     <span>
                         {
-                            formatTime(isPlaying? currentPlayBackTime:totalDuration)
+                            formatTime(isPlaying ? currentPlayBackTime : totalDuration)
                         }
                     </span>
                     <div className="flex gap-1">
