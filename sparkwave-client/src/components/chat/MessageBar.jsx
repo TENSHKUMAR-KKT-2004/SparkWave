@@ -1,6 +1,6 @@
 import { reducerCases } from '@/context/constants'
 import { useStateProvider } from '@/context/stateContext'
-import { SEND_IMAGE_MESSAGE_ROUTE, SEND_MESSAGE_ROUTE } from '@/utils/apiRoutes'
+import { SEND_GIF_MESSAGE_ROUTE, SEND_IMAGE_MESSAGE_ROUTE, SEND_MESSAGE_ROUTE } from '@/utils/apiRoutes'
 import axios from 'axios'
 import React, { useState, useRef, useEffect } from 'react'
 import { BsEmojiSmile } from "react-icons/bs"
@@ -9,16 +9,20 @@ import { MdSend } from "react-icons/md"
 import EmojiPicker from 'emoji-picker-react'
 import PhotoPicker from '../common/PhotoPicker'
 import { FaMicrophone } from 'react-icons/fa'
+import { HiOutlineGif } from "react-icons/hi2";
+import GifPicker from 'gif-picker-react';
 
 import dynamic from 'next/dynamic'
 
-const CaptureAudio = dynamic(()=> import('../common/CaptureAudio '),{ssr:false})
+const CaptureAudio = dynamic(() => import('../common/CaptureAudio '), { ssr: false })
 
 export default function MessageBar() {
   const [{ userInfo, currentChatUser, socket }, dispatch] = useStateProvider()
   const [message, setMessage] = useState("")
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+  const [showGifPicker, setShowGifPicker] = useState(false)
   const emojiPickerRef = useRef(null)
+  const gifPickerRef = useRef(null)
   const [grabPhoto, setGrabPhoto] = useState(false)
   const [showAudioRecorder, setShowAudioRecorder] = useState()
 
@@ -28,6 +32,10 @@ export default function MessageBar() {
         if (emojiPickerRef.current && !emojiPickerRef.current.contains(e.target)) {
           setShowEmojiPicker(false)
         }
+      }
+
+      if (gifPickerRef.current && !gifPickerRef.current.contains(e.target) && e.target.id !== 'gif-open') {
+        setShowGifPicker(false)
       }
     }
 
@@ -89,7 +97,7 @@ export default function MessageBar() {
             recieverId: currentChatUser.id,
           },
           fromSelf: true,
-          user : currentChatUser
+          user: currentChatUser
         })
 
         setMessage('')
@@ -101,6 +109,10 @@ export default function MessageBar() {
 
   const handleEmojiModel = () => {
     setShowEmojiPicker(!showEmojiPicker)
+  }
+
+  const handleGifModel = () => {
+    setShowGifPicker(!showGifPicker)
   }
 
   const handleEmojiClick = (emoji) => {
@@ -137,10 +149,60 @@ export default function MessageBar() {
           recieverId: currentChatUser.id,
         },
         fromSelf: true,
-        user : currentChatUser
+        user: currentChatUser
       })
 
       setMessage('')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+
+      if (message) {
+        sendMessage()
+      }
+    }
+  }
+
+  const handleGifClick = async (gif) => {
+    try {
+      const { data } = await axios.post(SEND_GIF_MESSAGE_ROUTE, {
+        to: currentChatUser.id,
+        from: userInfo.id,
+        message : gif.preview.url
+      })
+
+      socket.current.emit('send-message', {
+        to: currentChatUser.id,
+        from: userInfo.id,
+        message: data.message,
+        user: userInfo
+      })
+
+      dispatch({
+        type: reducerCases.ADD_NEW_MESSAGE,
+        newMessage: {
+          ...data.message
+        }
+      })
+
+      dispatch({
+        type: reducerCases.UPDATE_USER_CONTACTS,
+        newMessage: {
+          ...data.message,
+          senderId: userInfo.id,
+          recieverId: currentChatUser.id,
+        },
+        fromSelf: true,
+        user: currentChatUser
+      })
+
+      // setMessage('')
+      setShowGifPicker(false)
     } catch (err) {
       console.log(err)
     }
@@ -158,9 +220,20 @@ export default function MessageBar() {
               id="emoji-open"
               onClick={handleEmojiModel}
             />
+            <HiOutlineGif
+              className="text-panel-header-icon cursor-pointer text-xl"
+              title='GIF'
+              id="gif-open"
+              onClick={handleGifModel}
+            />
             {
               showEmojiPicker && <div className="absolute bottom-24 left-16 z-40" ref={emojiPickerRef}>
                 <EmojiPicker onEmojiClick={handleEmojiClick} theme="dark" />
+              </div>
+            }
+            {
+              showGifPicker && <div className="absolute bottom-24 left-16 z-40" ref={gifPickerRef} onClick={(e) => e.stopPropagation()}>
+                <GifPicker tenorApiKey={process.env.NEXT_PUBLIC_TENOR_API_KEY} theme="dark" country="IN" locale="en_IN" onGifClick={handleGifClick} />
               </div>
             }
             <ImAttachment
@@ -178,6 +251,7 @@ export default function MessageBar() {
               className="bg-input-background text-sm focus:outline-none text-white h-10 rounded-lg px-5 py-4 w-full"
               onChange={(e) => setMessage(e.target.value)}
               value={message}
+              onKeyDown={handleKeyDown}
             />
           </div>
           <div className="flex w-10 items-center justify-center">

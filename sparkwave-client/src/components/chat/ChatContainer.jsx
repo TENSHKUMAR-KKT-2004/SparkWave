@@ -6,6 +6,7 @@ import ImageMessage from './ImageMessage'
 
 import dynamic from 'next/dynamic'
 import { reducerCases } from '@/context/constants'
+import GifMessage from './GifMessage'
 const VoiceMessage = dynamic(() => import('./VoiceMessage'), { ssr: false })
 
 export default function ChatContainer() {
@@ -98,6 +99,11 @@ export default function ChatContainer() {
                   {
                     message.type === 'image' && (
                       <ImageMessage message={message} />
+                    )
+                  }
+                  {
+                    message.type === 'gif' && (
+                      <GifMessage message={message} />
                     )
                   }
                   {

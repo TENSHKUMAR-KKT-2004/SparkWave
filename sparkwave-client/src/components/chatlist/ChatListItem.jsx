@@ -5,6 +5,7 @@ import { reducerCases } from '@/context/constants'
 import { calculateTime } from '@/utils/calculateTime'
 import MessageStatus from '../common/MessageStatus'
 import { FaCamera, FaMicrophone } from 'react-icons/fa'
+import { RiFileGifFill } from "react-icons/ri";
 
 export default function ChatListItem({ data, isContactsPage = false }) {
     const [{ userInfo, currentChatUser }, dispatch] = useStateProvider()
@@ -70,6 +71,11 @@ export default function ChatListItem({ data, isContactsPage = false }) {
                                     {
                                         data.type === 'audio' && <span className="flex gap-1 items-center">
                                             <FaMicrophone className="text-panel-header-icon" /> Audio
+                                        </span>
+                                    }
+                                    {
+                                        data.type === 'gif' && <span className="flex gap-1 items-center">
+                                            <RiFileGifFill className="text-panel-header-icon text-lg" /> Gif
                                         </span>
                                     }
                                 </div>
