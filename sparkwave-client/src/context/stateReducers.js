@@ -235,6 +235,20 @@ export const reducer = (state, action) => {
                 message: []
             }
 
+        case reducerCases.FILTER_UNREAD_CHATS:
+            const filteredContacts = (Array.isArray(state.userContacts) ? state.userContacts : []).sort((a, b) => b.totalUnreadMessages - a.totalUnreadMessages)
+            return {
+                ...state,
+                userContacts: filteredContacts
+            }
+
+        case reducerCases.FILTER_TIME_CHATS:
+            const filteredContactsByTime = (Array.isArray(state.userContacts) ? state.userContacts : []).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+            return {
+                ...state,
+                userContacts: filteredContactsByTime
+            }
+
         default:
             return state
     }
