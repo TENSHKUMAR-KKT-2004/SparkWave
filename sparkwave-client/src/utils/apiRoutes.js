@@ -1,4 +1,4 @@
-export const HOST = "http://localhost:8080"
+export const HOST = "https://sparkwave.onrender.com"
 
 const AUTH_ROUTE = `${HOST}/api/auth`
 const MESSAGE_ROUTE = `${HOST}/api/messages`
