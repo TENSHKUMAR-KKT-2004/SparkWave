@@ -73,7 +73,6 @@ const getMessages = async (req, res) => {
 
 const addImageMessage = async (req, res) => {
     const { from, to } = req.query
-    // console.log('file is uploading')
     try {
         if (req.file) {
             const fileName = 'uploads/images/' + req.file.filename
@@ -102,7 +101,6 @@ const addImageMessage = async (req, res) => {
 
 const addAudioMessage = async (req, res) => {
     const { from, to } = req.query
-    // console.log('file is uploading')
     try {
         if (req.file) {
             const fileName = 'uploads/recordings/' + req.file.filename
@@ -164,11 +162,11 @@ const getInitialContactsWithMessages = async (req, res) => {
         const users = new Map()  // key: u-id, value: user & data
         const messageStatusChange = []
 
-        messages.forEach((message)=>{
+        messages.forEach((message) => {
             const isSender = message.senderId === userId
             const calculatedOpositeUserId = isSender ? message.recieverId : message.senderId
-            
-            if(message.messageStatus === "sent"){
+
+            if (message.messageStatus === "sent") {
                 messageStatusChange.push(message.id)
             }
 
@@ -181,7 +179,7 @@ const getInitialContactsWithMessages = async (req, res) => {
                 recieverId
             } = message
 
-            if(!users.get(calculatedOpositeUserId)){
+            if (!users.get(calculatedOpositeUserId)) {
                 let user = {
                     messageId: id,
                     type,
@@ -192,13 +190,13 @@ const getInitialContactsWithMessages = async (req, res) => {
                     recieverId
                 }
 
-                if(isSender){
+                if (isSender) {
                     user = {
                         ...user,
                         ...message.reciever,
-                        totalUnreadMessages:0
+                        totalUnreadMessages: 0
                     }
-                }else{
+                } else {
                     user = {
                         ...user,
                         ...message.sender,
@@ -206,8 +204,8 @@ const getInitialContactsWithMessages = async (req, res) => {
                     }
                 }
 
-                users.set(calculatedOpositeUserId,{...user})
-            } else if(message.messageStatus !== "read" && !isSender){ // for counting the total unread messages
+                users.set(calculatedOpositeUserId, { ...user })
+            } else if (message.messageStatus !== "read" && !isSender) { // for counting the total unread messages
                 const user = users.get(calculatedOpositeUserId)
                 users.set(calculatedOpositeUserId, {
                     ...user,
@@ -216,7 +214,7 @@ const getInitialContactsWithMessages = async (req, res) => {
             }
         })
 
-        if(messageStatusChange.length){ // updating status from sent to delivered
+        if (messageStatusChange.length) { // updating status from sent to delivered
             await prisma.messages.updateMany({
                 where: {
                     id: { in: messageStatusChange }
