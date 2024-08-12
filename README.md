@@ -140,58 +140,61 @@ SparkWave is a real-time chat application that enables users to connect with fri
 
 ![WebRTC](https://www.wowza.com/wp-content/uploads/WebRTC.gif)
 
-    WebRTC (Web Real-Time Communication) is a powerful technology that enables real-time audio, video, and data communication directly in the browser without needing plugins. In SparkWave, WebRTC is used to facilitate seamless video and voice calls, providing a high-quality and interactive communication experience between users. It leverages peer-to-peer connections and supports various media types, making it ideal for real-time communication applications
+WebRTC (Web Real-Time Communication) is a powerful technology that enables real-time audio, video, and data communication directly in the browser without needing plugins. In SparkWave, WebRTC is used to facilitate seamless video and voice calls, providing a high-quality and interactive communication experience between users. It leverages peer-to-peer connections and supports various media types, making it ideal for real-time communication applications
 
 ### Socket.io
 
 ![Socket.io](https://media.licdn.com/dms/image/D4D22AQG7d-bLIeIvKw/feedshare-shrink_800/0/1701789516031?e=2147483647&v=beta&t=TlgJSIXlBBHPlmZvkJIm-O-VwqjsaUKIKIw4-5Zfejo)
 
-    Socket.io enables real-time, bidirectional communication between clients and servers. It is used in SparkWave to handle real-time messaging, ensuring that users receive messages and updates instantaneously
+Socket.io enables real-time, bidirectional communication between clients and servers. It is used in SparkWave to handle real-time messaging, ensuring that users receive messages and updates instantaneously
 
 
 ## Screenshots
 
 ### Home Page
 
-
+![home-page](https://github.com/user-attachments/assets/3b8dfebc-a253-493c-beb6-415056a5a71b)
 
 ### Onboarding Page
 
-
+![onboarding](https://github.com/user-attachments/assets/c8f4b832-0f9c-4b5f-a8c9-c83e263daec5)
 
 ### Users List
 
-
+![users-list](https://github.com/user-attachments/assets/9042b016-0234-4f0e-b8ae-eb8f3df6d67e)
 
 ### Chatting
 
+![chat-interface](https://github.com/user-attachments/assets/a03ef46f-333b-43b0-8097-03f1b329493c)
 
+![chat-interface-2](https://github.com/user-attachments/assets/1977c831-8df5-4614-9f85-5178e4074e46)
 
-
-
-
+![chat-interface-3](https://github.com/user-attachments/assets/acf9ba84-37e9-4e09-98a2-9b2829adf416)
 
 ### Video Calling
 
+![video-call](https://github.com/user-attachments/assets/a4789395-0b0f-478d-a6d6-6146014a7849)
 
+![video-call-2](https://github.com/user-attachments/assets/bcb88dbc-92a1-45ac-ad15-95b5c12002e5)
 
-
-
+![video-call-3](https://github.com/user-attachments/assets/4665bc34-fcbb-4012-baa6-252ba164fc48)
 
 ### Voice Calling
 
+![voice-call](https://github.com/user-attachments/assets/d206934a-4f31-40a1-8950-af2ebf679589)
 
+![voice-call-2](https://github.com/user-attachments/assets/8ebe6b9e-1939-4047-b4f4-be2873719173)
 
+![voice-call-3](https://github.com/user-attachments/assets/6360888c-0c57-4481-8c90-2150852c522e)
 
 ### Search Messages
 
-
-
+![search-message](https://github.com/user-attachments/assets/af29de5a-624a-4302-afa9-4668372d6c5f)
 
 
 ## License
 
-    This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
 ## Acknowledgments
