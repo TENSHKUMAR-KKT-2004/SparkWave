@@ -46,7 +46,7 @@ export default function ChatHeader() {
   ]
 
   const handleVideoCall = () => {
-    onlineUsers[currentChatUser.id] ? dispatch({
+    onlineUsers[currentChatUser?.id] ? dispatch({
       type: reducerCases.SET_VIDEO_CALL,
       videoCall: {
         ...currentChatUser,
@@ -62,12 +62,12 @@ export default function ChatHeader() {
       <div className="flex items-center justify-center gap-6">
         <Avatar type="sm" image={currentChatUser?.profile_picture} />
         <div className="flex flex-col">
-          <span className="text-primary-strong">{userInfo.id === currentChatUser.id ? "You" : userName}</span>
-          <span className="text-secondary text-sm">{onlineUsers[currentChatUser.id] ? 'Online' : 'Offline'}</span>
+          <span className="text-primary-strong">{userInfo.id === currentChatUser?.id ? "You" : userName}</span>
+          <span className="text-secondary text-sm">{onlineUsers[currentChatUser?.id] ? 'Online' : 'Offline'}</span>
         </div>
       </div>
       <div className="flex gap-6">
-        {userInfo.id !== currentChatUser.id && <> <MdCall
+        {userInfo.id !== currentChatUser?.id && <> <MdCall
           className="text-panel-header-icon cursor-pointer text-xl"
           onClick={handleVoiceCall}
         />

@@ -8,7 +8,7 @@ import { FaCamera, FaMicrophone } from 'react-icons/fa'
 import { RiFileGifFill } from "react-icons/ri";
 
 export default function ChatListItem({ data, isContactsPage = false }) {
-    const [{ userInfo, currentChatUser }, dispatch] = useStateProvider()
+    const [{ userInfo }, dispatch] = useStateProvider()
     const handleContactClick = () => {
         if (!isContactsPage) {
             dispatch({
@@ -25,6 +25,10 @@ export default function ChatListItem({ data, isContactsPage = false }) {
             dispatch({ type: reducerCases.CHANGE_CURRENT_CHAT_USER, user: { ...data } })
             dispatch({ type: reducerCases.SET_ALL_CONTACTS_PAGE })
         }
+    }
+
+    const truncateText = (text, maxLength) => {
+        return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
     }
 
     return (
@@ -61,7 +65,7 @@ export default function ChatListItem({ data, isContactsPage = false }) {
                                             data.senderId === userInfo.id && <MessageStatus messageStatus={data.messageStatus} />
                                         }
                                         {
-                                            data.type === 'text' && <span className="truncate">{data.message}</span>
+                                            data.type === 'text' && <span className="truncate">{truncateText(data.message, 20)}</span>
                                         }
                                         {
                                             data.type === 'image' && <span className="flex gap-1 items-center">
