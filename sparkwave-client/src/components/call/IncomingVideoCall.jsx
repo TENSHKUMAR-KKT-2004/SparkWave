@@ -3,7 +3,7 @@ import { useStateProvider } from '@/context/stateContext'
 import Image from 'next/image'
 import React from 'react'
 
-export default function incomingVideoCall() {
+export default function IncomingVideoCall() {
     const [{ incomingVideoCall, socket }, dispatch] = useStateProvider()
 
     const acceptCall = () => {

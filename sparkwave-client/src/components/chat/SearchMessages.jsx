@@ -64,7 +64,7 @@ export default function SearchMessages() {
             {
               searchMessages.map((message) => {
                 return (
-                  <div className="flex cursor-pointer flex-col justify-center w-full px-5 border-b-[0.1px] py-5 border-secondary hover:bg-background-default-hover">
+                  <div key={message.createdAt} className="flex cursor-pointer flex-col justify-center w-full px-5 border-b-[0.1px] py-5 border-secondary hover:bg-background-default-hover">
                     <div className="text-sm text-secondary">
                       {
                         calculateTime(message.createdAt)

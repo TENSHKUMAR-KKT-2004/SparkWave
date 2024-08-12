@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from "react";
 import { FcGoogle } from 'react-icons/fc'
 
-function index() {
+function Index() {
     const router = useRouter()
     const [{ userInfo, newUser }, dispatch] = useStateProvider()
 

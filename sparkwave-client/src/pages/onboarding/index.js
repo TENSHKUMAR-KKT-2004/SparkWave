@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react'
 import { reducerCases } from '@/context/constants';
 import { useRouter } from 'next/router';
 
-export default function index() {
+export default function Index() {
     const [{ userInfo, newUser, onBoarded }, dispatch] = useStateProvider()
     const [name, setName] = useState(userInfo?.name || "")
     const [about, setAbout] = useState("")

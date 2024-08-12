@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { toast } from 'react-toastify'
 
-export default function index() {
+export default function Index() {
   const [{ socket, userInfo }, dispatch] = useStateProvider()
   const router = useRouter()
 
