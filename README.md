@@ -1,6 +1,6 @@
 # SparkWave
 
-gif
+![SparkWave](https://github.com/user-attachments/assets/042d20e9-f6fd-4681-be8b-252e309d5049)
 
 SparkWave is a real-time chat application that enables users to connect with friends through text, emojis, voice messages, and multimedia sharing, including images and GIFs. It also supports voice and video calls. Built with modern technologies such as Next.js, WebRTC, Socket.io, Node.js, and Firebase. SparkWave offers a seamless user experience with real-time synchronization
 
@@ -154,6 +154,10 @@ Socket.io enables real-time, bidirectional communication between clients and ser
 ### Home Page
 
 ![home-page](https://github.com/user-attachments/assets/3b8dfebc-a253-493c-beb6-415056a5a71b)
+
+### Login Page
+
+![login](https://github.com/user-attachments/assets/c33f3396-7eca-48f2-b531-d84dc83dfc0a)
 
 ### Onboarding Page
 
